@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<!-- ================================================================
+     САЙТ ЮРИДИЧЕСКОГО ОБЪЕДИНЕНИЯ «ХАРЧЕНКО ТА ПАРТНЕРИ»
+     ================================================================
+     СТРУКТУРА ФАЙЛА:
+       1. <head>  — метатеги, шрифты, favicon, все стили (CSS)
+       2. <body>  — разметка секций сайта (HTML)
+       3. <script> — в самом начале скрипта находятся ТРИ РЕДАКТИРУЕМЫХ
+          СПИСКА: NEWS_DATA (новости), CASES_DATA (выигранные дела),
+          TEAM_DATA (команда). Чтобы добавить новость/дело/юриста —
+          скопируйте блок-шаблон и заполните поля. Вёрстку трогать не надо.
+          Ниже — словарь переводов I18N (укр/рус/англ) и логика сайта.
+     ================================================================ -->
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6A1A1A">
+
+    <!-- SEO: заголовок и описание страницы (заголовок меняется при смене языка) -->
+    <title>Юридичне об'єднання «Харченко та партнери» | Полтава</title>
+    <meta name="description" content="Адвокат Олександр Харченко. Захист бізнесу, податкові спори, сімейне право, кримінальний захист у Полтаві. Понад 20 років практики.">
+    <meta property="og:title" content="Юридичне об'єднання «Харченко та партнери» | Полтава">
+    <meta property="og:description" content="Професійна правова допомога у Полтаві. Адвокат Олександр Харченко.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?auto=format&fit=crop&w=1200&q=80">
+
+    <!-- Favicon: встроенная SVG-эмблема весов правосудия (иконка вкладки браузера) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='12'%20fill='%236A1A1A'/%3E%3Cg%20fill='none'%20stroke='%23fff'%20stroke-width='2.6'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M32%2010l4%205-4%205-4-5z'%20fill='%23fff'%20stroke='none'/%3E%3Cline%20x1='32'%20y1='20'%20x2='32'%20y2='50'/%3E%3Cline%20x1='14'%20y1='21'%20x2='50'%20y2='21'/%3E%3Cline%20x1='14'%20y1='21'%20x2='9'%20y2='31'/%3E%3Cline%20x1='14'%20y1='21'%20x2='19'%20y2='31'/%3E%3Cpath%20d='M8%2031Q14%2041%2020%2031'/%3E%3Cline%20x1='50'%20y1='21'%20x2='45'%20y2='31'/%3E%3Cline%20x1='50'%20y1='21'%20x2='55'%20y2='31'/%3E%3Cpath%20d='M44%2031Q50%2041%2056%2031'/%3E%3Cpath%20d='M25%2052Q32%2046%2039%2052'/%3E%3Cline%20x1='23'%20y1='53'%20x2='41'%20y2='53'/%3E%3C/g%3E%3C/svg%3E">
+
+    <!-- Подключение шрифтов Google: Inter (основной текст) и Playfair Display (заголовки) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome: набор иконок (телефон, конверт, стрелки и т.д.) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* ============================================================
+           1. ПЕРЕМЕННЫЕ ТЕМЫ (CSS custom properties)
+           Все фирменные цвета, тени и размеры собраны здесь.
+           Чтобы сменить цветовую гамму сайта — правьте только этот блок.
+           ============================================================ */
+        :root {
+            --color-primary: #6A1A1A;        /* фирменный бордовый */
+            --color-primary-hover: #501212;  /* бордовый при наведении */
+            --color-accent: #B08D57;         /* золотистый акцент */
+            --color-text-main: #2A2A2A;      /* основной цвет текста */
+            --color-text-muted: #555555;     /* приглушённый текст */
+            --color-bg-white: #FFFFFF;
+            --color-bg-gray: #F5F5F5;        /* светло-серые секции */
+            --color-bg-footer: #1A1A1A;      /* тёмный подвал */
+            --color-border: #E5E5E5;
+            --color-error: #D32F2F;          /* ошибки формы */
+            --color-success: #2E7D32;        /* успешная отправка/выигрыш дела */
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.04);
+            --shadow-md: 0 15px 45px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 60px rgba(106,26,26,0.15);
+            --shadow-xl: 0 30px 80px rgba(0,0,0,0.12);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);      /* плавность анимаций */
+            --transition-slow: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            --container-width: 1240px;       /* максимальная ширина контента */
+            --header-height: 100px;
+            --radius: 8px;                   /* скругление углов */
+        }
+
+        /* ============================================================
+           2. БАЗОВЫЕ СТИЛИ (reset + типографика)
+           ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; } /* плавная прокрутка к якорям */
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            color: var(--color-text-main);
+            background-color: var(--color-bg-white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; /* защита от горизонтального скролла */
+        }
+        /* Все заголовки — антиквенным шрифтом Playfair Display */
+        h1, h2, h3, h4, .serif-title {
+            font-family: 'Playfair Display', 'Times New Roman', serif;
+            font-weight: 500;
+            line-height: 1.25;
+            color: var(--color-text-main);
+        }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        img { max-width: 100%; height: auto; display: block; }
+        .container { /* центрирующая обёртка каждой секции */
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+        /* Видимая обводка при навигации клавиатурой (доступность) */
+        :focus-visible {
+            outline: 3px solid var(--color-accent);
+            outline-offset: 3px;
+            border-radius: 2px;
+        }
+
+        /* ============================================================
+           3. КНОПКИ (основная бордовая и контурная)
+           ============================================================ */
+        .btn-primary {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            background-color: var(--color-primary);
+            color: var(--color-bg-white);
+            padding: 16px 42px;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 13px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px;
+            border: none; border-radius: 4px; cursor: pointer;
+            transition: var(--transition);
+            position: relative; overflow: hidden;
+        }
+        /* Светящийся градиент поверх кнопки при наведении */
+        .btn-primary::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%);
+            opacity: 0; transition: var(--transition);
+        }
+        .btn-primary:hover::after { opacity: 1; }
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+        .btn-outline { /* прозрачная кнопка с бордовой рамкой */
+            display: inline-flex; align-items: center; gap: 8px;
+            background: transparent; color: var(--color-primary);
+            padding: 14px 32px;
+            font-size: 13px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            border: 2px solid var(--color-primary); border-radius: 4px;
+            cursor: pointer; transition: var(--transition);
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        .btn-outline:hover {
+            background: var(--color-primary); color: #fff;
+            transform: translateY(-2px); box-shadow: var(--shadow-md);
+        }
+
+        /* ============================================================
+           4. АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ ПРОКРУТКЕ
+           Элементы с классом .fade-in-up невидимы и сдвинуты вниз;
+           когда попадают в поле зрения — JS добавляет .visible.
+           delay-1..4 — ступенчатая задержка для каскадного эффекта.
+           ============================================================ */
+        .fade-in-up {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+        .fade-in-up.delay-1 { transition-delay: 0.1s; }
+        .fade-in-up.delay-2 { transition-delay: 0.2s; }
+        .fade-in-up.delay-3 { transition-delay: 0.3s; }
+        .fade-in-up.delay-4 { transition-delay: 0.4s; }
+
+        /* Скрытая ссылка «перейти к контенту» — появляется по Tab (доступность) */
+        .skip-link {
+            position: absolute; top: -100%; left: 50%; transform: translateX(-50%);
+            background: var(--color-primary); color: #fff; padding: 12px 24px;
+            z-index: 9999; border-radius: 0 0 8px 8px; font-weight: 600;
+            transition: var(--transition);
+        }
+        .skip-link:focus { top: 0; }
+
+        /* ============================================================
+           5. ВЕРХНЯЯ ПАНЕЛЬ: переключатель языков + часы работы + контакты
+           ============================================================ */
+        .top-bar {
+            display: flex; justify-content: flex-end; align-items: center;
+            padding: 0 24px; background: var(--color-bg-white);
+            border-bottom: 1px solid var(--color-border);
+            position: relative; z-index: 100; flex-wrap: wrap; gap: 12px;
+        }
+        /* Переключатель языков UA | RU | EN (прижат влево) */
+        .lang-switch {
+            display: flex; gap: 6px; margin-right: auto; align-items: center;
+        }
+        .lang-btn {
+            border: 1px solid var(--color-border); background: transparent;
+            color: var(--color-text-muted); font-family: 'Inter', sans-serif;
+            font-size: 11px; font-weight: 700; letter-spacing: 1px;
+            padding: 6px 12px; border-radius: 20px; cursor: pointer;
+            transition: var(--transition);
+        }
+        .lang-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+        .lang-btn.active { /* активный язык — залит бордовым */
+            background: var(--color-primary); border-color: var(--color-primary); color: #fff;
+        }
+        .top-info { /* строка с часами работы */
+            font-size: 11px; color: var(--color-text-muted);
+            letter-spacing: 0.8px; text-transform: uppercase; font-weight: 500;
+        }
+        .top-contact-box { /* бордовый блок с телефоном и e-mail */
+            background-color: var(--color-primary); color: var(--color-bg-white);
+            padding: 16px 35px; font-size: 13px;
+            display: flex; flex-direction: column; gap: 2px;
+            box-shadow: var(--shadow-sm); border-radius: 0 0 8px 8px;
+        }
+        .top-contact-box span { opacity: 0.8; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+        .top-contact-box strong { font-size: 18px; font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: 0.5px; }
+        .top-contact-box a { color: rgba(255,255,255,0.85); font-size: 12px; }
+        .top-contact-box a:hover { color: #fff; text-decoration: underline; }
+
+        /* ============================================================
+           6. ШАПКА САЙТА: логотип + главное меню (прилипает к верху)
+           ============================================================ */
+        .main-header {
+            border-bottom: 1px solid var(--color-border);
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(8px);   /* лёгкое размытие контента под шапкой */
+            position: sticky; top: 0; z-index: 99;
+            transition: var(--transition);
+            height: var(--header-height);
+        }
+        .main-header.scrolled { box-shadow: var(--shadow-md); } /* тень после прокрутки */
+        .header-inner { display: flex; justify-content: space-between; align-items: center; height: 100%; }
+        /* Логотип объединения (файл logo_harchenko.png с прозрачным фоном) */
+        .logo { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+        .logo-img { height: 74px; width: auto; display: block; transition: var(--transition); }
+        .logo:hover .logo-img { transform: scale(1.04); }
+        /* Главное меню */
+        .main-nav { display: flex; gap: 26px; align-items: center; }
+        .main-nav a {
+            font-size: 11px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1.2px; color: var(--color-text-muted);
+            position: relative; padding: 6px 0;
+        }
+        .main-nav a::after { /* анимированное подчёркивание пункта меню */
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px; background-color: var(--color-primary);
+            transition: var(--transition);
+        }
+        .main-nav a:hover::after, .main-nav a.active::after { width: 100%; }
+        .main-nav a:hover, .main-nav a.active { color: var(--color-primary); }
+
+        /* Кнопка-«бургер» мобильного меню (3 полоски -> крестик) */
+        .burger-btn {
+            display: none; flex-direction: column; gap: 5px;
+            background: none; border: none; cursor: pointer;
+            padding: 8px 4px; z-index: 101;
+        }
+        .burger-btn span {
+            display: block; width: 26px; height: 2.5px;
+            background: var(--color-text-main); border-radius: 2px;
+            transition: var(--transition); transform-origin: center;
+        }
+        .burger-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .burger-btn.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .burger-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+        /* Затемнение страницы позади выдвинутого мобильного меню */
+        .mobile-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 98; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .mobile-overlay.active { opacity: 1; }
+
+        /* ============================================================
+           7. ГЛАВНЫЙ ЭКРАН (HERO): заголовок, кнопки, фото Фемиды
+           ============================================================ */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #ffffff 50%, var(--color-bg-gray) 50%); /* диагональный фон */
+            overflow: hidden; min-height: 85vh;
+            display: flex; align-items: center; position: relative;
+        }
+        .hero-container { display: flex; align-items: center; gap: 60px; }
+        .hero-content { flex: 1.1; padding-right: 20px; }
+        .hero-eyebrow { /* маленький бейдж над заголовком */
+            display: inline-flex; align-items: center; gap: 8px;
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--color-primary);
+            margin-bottom: 20px; padding: 7px 16px;
+            background: rgba(106,26,26,0.07); border-radius: 40px;
+        }
+        .hero-title {
+            font-size: clamp(32px, 4.5vw, 56px); /* адаптивный размер шрифта */
+            margin-bottom: 20px; font-weight: 400; line-height: 1.15;
+        }
+        .hero-title .highlight { color: var(--color-primary); position: relative; }
+        .hero-title .highlight::after { /* полупрозрачное подчёркивание акцентных слов */
+            content: ''; position: absolute; bottom: 2px; left: 0;
+            width: 100%; height: 4px; background: var(--color-primary);
+            opacity: 0.25; border-radius: 2px;
+        }
+        .hero-subtitle {
+            font-size: 15px; color: var(--color-text-muted);
+            margin-bottom: 36px; max-width: 520px; line-height: 1.8;
+        }
+        .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+        /* Обёртка фото Фемиды справа */
+        .hero-image-wrapper {
+            flex: 0.9; position: relative; height: 580px;
+            display: flex; justify-content: center; align-items: center;
+            border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow-xl); background: var(--color-bg-gray);
+        }
+        .hero-image { width: 100%; height: 100%; object-fit: cover; transition: var(--transition-slow); }
+        .hero-image-wrapper:hover .hero-image { transform: scale(1.03); } /* лёгкий зум при наведении */
+        .hero-image-wrapper::after { /* бордовая дымка снизу фото */
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(106,26,26,0.08) 100%);
+            pointer-events: none;
+        }
+        .hero-badge { /* плашка «20+ лет практики» поверх фото */
+            position: absolute; left: 24px; bottom: 24px; z-index: 2;
+            background: rgba(255,255,255,0.94); backdrop-filter: blur(6px);
+            padding: 14px 20px; border-radius: var(--radius);
+            box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 12px;
+        }
+        .hero-badge i { color: var(--color-primary); font-size: 24px; }
+        .hero-badge strong { display: block; font-size: 15px; font-family: 'Playfair Display', serif; }
+        .hero-badge span { font-size: 11px; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+
+        /* ============================================================
+           8. ВИДЖЕТ-ВКЛАДКИ УСЛУГ (4 направления практики под заголовком)
+           ============================================================ */
+        .services-tabs-widget {
+            margin-top: 48px; background: var(--color-bg-white);
+            box-shadow: var(--shadow-md); display: flex;
+            position: relative; min-height: 180px; max-width: 640px;
+            border-radius: var(--radius); overflow: hidden;
+            border: 1px solid var(--color-border);
+        }
+        .tab-content-area { flex: 1; padding: 30px 32px; position: relative; overflow: hidden; }
+        .tab-pane { /* содержимое одной вкладки (скрыто по умолчанию) */
+            display: none; opacity: 0; transform: translateY(12px);
+            transition: all 0.4s ease; gap: 20px; align-items: flex-start;
+        }
+        .tab-pane.active { display: flex; opacity: 1; transform: translateY(0); }
+        .tab-icon { /* круглая фотография-иконка услуги */
+            width: 72px; height: 72px; border-radius: 50%; object-fit: cover;
+            flex-shrink: 0; border: 3px solid var(--color-bg-gray);
+            transition: var(--transition); background: var(--color-bg-gray);
+        }
+        .tab-pane.active .tab-icon { border-color: var(--color-primary); }
+        .tab-text h3 { font-size: 18px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .tab-text h3 .number { color: #D0D0D0; font-size: 28px; font-family: 'Playfair Display', serif; font-weight: 400; }
+        .tab-text p { font-size: 13px; color: var(--color-text-muted); line-height: 1.6; }
+        .tabs-sidebar { /* вертикальный ряд кнопок 01-04 справа */
+            width: 56px; background: var(--color-bg-gray);
+            display: flex; flex-direction: column; flex-shrink: 0;
+        }
+        .tab-trigger {
+            flex: 1; border: none; background: transparent;
+            color: var(--color-text-muted); font-family: 'Playfair Display', serif;
+            font-size: 17px; cursor: pointer; transition: var(--transition);
+            border-bottom: 1px solid var(--color-bg-white);
+            display: flex; align-items: center; justify-content: center; font-weight: 500;
+        }
+        .tab-trigger:last-child { border-bottom: none; }
+        .tab-trigger:hover { background: #EAEAEA; color: var(--color-text-main); }
+        .tab-trigger.active { background: var(--color-primary); color: var(--color-bg-white); }
+
+        /* ============================================================
+           9. ПОЛОСА СТАТИСТИКИ (бордовая, с анимированными счётчиками)
+           Числа задаются в HTML через data-count и data-suffix.
+           ============================================================ */
+        .stats-section { padding: 60px 0; background: var(--color-primary); color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
+        .stat-item { padding: 20px; }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 4vw, 52px);
+            font-weight: 700; display: block; line-height: 1.2;
+        }
+        .stat-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; font-weight: 500; margin-top: 4px; }
+
+        /* ============================================================
+           10. СЕКЦИЯ «О ОБЪЕДИНЕНИИ» (руководитель + 4 абзаца + портфолио)
+           ============================================================ */
+        .about-section { padding: 100px 0; background-color: var(--color-bg-gray); }
+        .about-header {
+            display: flex; align-items: center; gap: 24px;
+            margin-bottom: 50px; border-bottom: 1px solid #D8D8D8; padding-bottom: 32px;
+        }
+        .drop-cap { /* большая декоративная буква «Х» */
+            font-family: 'Playfair Display', serif;
+            font-size: 100px; line-height: 0.75;
+            color: var(--color-primary);
+            text-shadow: 2px 2px 0 rgba(106,26,26,0.08);
+            flex-shrink: 0;
+        }
+        .about-title h2 { font-size: 34px; margin-bottom: 4px; font-weight: 400; }
+        .about-title p { font-size: 17px; color: var(--color-text-muted); font-style: italic; font-family: 'Playfair Display', serif; }
+        .about-title .meta { font-style: normal; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--color-text-muted); margin-top: 8px; }
+        .about-brand { /* фото фирменного портфолио справа в шапке секции */
+            margin: 0 0 0 auto; flex-shrink: 0; width: 200px;
+            border-radius: var(--radius); overflow: hidden;
+            box-shadow: var(--shadow-md); align-self: center; transition: var(--transition);
+        }
+        .about-brand:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+        .about-brand img { width: 100%; display: block; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; } /* текст в 2 колонки */
+        .about-grid p { font-size: 15px; color: var(--color-text-muted); margin-bottom: 20px; line-height: 1.8; text-align: justify; }
+        .about-grid p:last-child { margin-bottom: 0; }
+
+        /* ============================================================
+           11. СЕКЦИЯ «НАША КОМАНДА»
+           Карточки юристов генерируются скриптом из массива TEAM_DATA.
+           Если у юриста нет фото — рисуется аватар с инициалами.
+           ============================================================ */
+        .team-section { padding: 100px 0; background: var(--color-bg-white); }
+        .section-header { /* общий заголовок для секций Команда/Новости/Дела */
+            text-align: center; max-width: 780px; margin: 0 auto 50px;
+        }
+        .section-header h2 { font-size: 34px; margin-bottom: 16px; font-weight: 400; }
+        .section-header p { color: var(--color-text-muted); font-size: 16px; }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* авто-раскладка карточек */
+            gap: 30px;
+        }
+        .team-card {
+            background: var(--color-bg-gray); border-radius: var(--radius);
+            overflow: hidden; box-shadow: var(--shadow-sm);
+            transition: var(--transition); display: flex; flex-direction: column;
+        }
+        .team-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .team-photo { /* фото юриста (пропорция 3:4) */
+            width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block;
+            background: #E8E2DC;
+        }
+        .team-info { padding: 22px 22px 26px; display: flex; flex-direction: column; flex: 1; }
+        .team-name { font-size: 19px; font-weight: 600; margin-bottom: 4px; font-family: 'Playfair Display', serif; }
+        .team-role { /* должность — бордовым, капсом */
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.2px; color: var(--color-primary); margin-bottom: 12px;
+        }
+        .team-exp { font-size: 13.5px; color: var(--color-text-muted); line-height: 1.65; flex: 1; }
+        .team-years { /* плашка «N лет опыта» внизу карточки */
+            margin-top: 14px; display: inline-flex; align-items: center; gap: 8px;
+            font-size: 12px; font-weight: 600; color: var(--color-primary);
+        }
+        .team-years i { font-size: 14px; }
+
+        /* ============================================================
+           12. СЕКЦИЯ «НОВОСТИ» (правовые позиции Верховного Суда)
+           Карточки генерируются скриптом из массива NEWS_DATA.
+           ============================================================ */
+        .news-section { padding: 100px 0; background: var(--color-bg-gray); }
+        .news-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .news-card {
+            background: var(--color-bg-white); padding: 28px;
+            border-top: 4px solid var(--color-primary); /* бордовая полоса сверху */
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--shadow-sm); transition: var(--transition);
+            display: flex; flex-direction: column;
+        }
+        .news-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+        .news-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+        .news-date { /* дата публикации */
+            font-size: 12px; color: var(--color-text-muted); font-weight: 500;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .news-tag { /* рубрика новости (напр. «Налоговые споры») */
+            font-size: 10px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--color-primary);
+            background: rgba(106,26,26,0.08); padding: 4px 10px; border-radius: 20px;
+        }
+        .news-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 10px; line-height: 1.4; }
+        .news-card p { font-size: 13.5px; color: var(--color-text-muted); line-height: 1.65; flex: 1; }
+        .news-link { /* ссылка «Читать решение» на реестр судебных решений */
+            margin-top: 16px; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.2px;
+            color: var(--color-primary); display: inline-flex; align-items: center; gap: 8px;
+        }
+        .news-link:hover { gap: 12px; } /* стрелка «отъезжает» при наведении */
+
+        /* ============================================================
+           13. СЕКЦИЯ «ВЫИГРАННЫЕ ДЕЛА»
+           Карточки генерируются скриптом из массива CASES_DATA.
+           ============================================================ */
+        .cases-section { padding: 100px 0; background: var(--color-bg-white); }
+        .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .case-card {
+            background: var(--color-bg-gray);
+            border-left: 5px solid var(--color-primary); /* бордовый корешок слева */
+            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 28px; transition: var(--transition);
+            display: flex; flex-direction: column;
+        }
+        .case-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); background: #fff; }
+        .case-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .case-year { /* год решения — крупной антиквой */
+            font-family: 'Playfair Display', serif; font-size: 26px;
+            font-weight: 700; color: #D0C6C6;
+        }
+        .case-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--color-primary); background: rgba(106,26,26,0.08); padding: 4px 10px; border-radius: 20px; }
+        .case-court { /* название суда */
+            font-size: 12px; color: var(--color-text-muted); margin-bottom: 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .case-court i { color: var(--color-primary); }
+        .case-card h3 { font-size: 16.5px; font-weight: 600; margin-bottom: 10px; line-height: 1.45; }
+        .case-desc { font-size: 13.5px; color: var(--color-text-muted); line-height: 1.65; flex: 1; }
+        .case-result { /* итог дела — зелёная плашка «выиграно» */
+            margin-top: 16px; padding: 12px 14px;
+            background: #F0F7F1; border-left: 3px solid var(--color-success);
+            border-radius: 4px; font-size: 13px; color: #1D5C22; line-height: 1.5;
+        }
+        .case-result strong { display: block; font-size: 10.5px; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--color-success); margin-bottom: 3px; }
+
+        /* ============================================================
+           14. СЕКЦИЯ «ПОЛТАВЩИНА» (три фотокарточки с наложением текста)
+           ============================================================ */
+        .poltava-heritage { padding: 100px 0; background: var(--color-bg-gray); }
+        .heritage-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .heritage-card {
+            position: relative; border-radius: var(--radius); overflow: hidden;
+            aspect-ratio: 4/5; box-shadow: var(--shadow-sm);
+            transition: var(--transition); cursor: pointer; background: #E8E2DC;
+        }
+        .heritage-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+        .heritage-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: grayscale(30%) sepia(8%) contrast(105%); /* приглушённая тонировка */
+        }
+        .heritage-card:hover img { transform: scale(1.06); filter: none; } /* цвет возвращается при наведении */
+        .heritage-overlay { /* тёмный градиент с заголовком поверх фото */
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.3) 50%, transparent 100%);
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding: 28px 24px; transition: var(--transition);
+        }
+        .heritage-overlay h3 { color: #fff; font-size: 20px; margin-bottom: 6px; transform: translateY(10px); transition: var(--transition); }
+        .heritage-overlay p { color: #D5D5D5; font-size: 13px; opacity: 0; transform: translateY(16px); transition: var(--transition); line-height: 1.5; }
+        .heritage-card:hover .heritage-overlay h3 { transform: translateY(0); }
+        .heritage-card:hover .heritage-overlay p { opacity: 1; transform: translateY(0); }
+
+        /* ============================================================
+           15. СЕКЦИЯ «ПРАКТИКИ» (карточка-вопрос + список из 10 услуг)
+           ============================================================ */
+        .categories-section { padding: 100px 0; background-color: var(--color-bg-white); border-top: 1px solid var(--color-border); }
+        .categories-grid { display: grid; grid-template-columns: 1.1fr 2fr; gap: 60px; align-items: start; }
+        .cat-intro { /* карточка с вопросом слева */
+            background: var(--color-bg-gray); padding: 40px 36px;
+            border-left: 5px solid var(--color-primary);
+            box-shadow: var(--shadow-sm); border-radius: 0 var(--radius) var(--radius) 0;
+        }
+        .cat-intro-content { display: flex; align-items: flex-start; gap: 16px; }
+        .drop-cap-small { font-family: 'Playfair Display', serif; font-size: 58px; line-height: 0.8; color: #DCDCDC; flex-shrink: 0; }
+        .cat-intro h3 { font-size: 20px; margin-bottom: 10px; font-weight: 600; }
+        .cat-intro p { font-size: 14px; color: var(--color-text-muted); line-height: 1.7; }
+        .cat-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 30px; list-style: none; padding: 0; }
+        .cat-list a {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 14px; color: var(--color-text-main);
+            padding: 8px 0; border-bottom: 1px solid var(--color-border);
+            width: 100%; font-weight: 500;
+        }
+        .cat-list a i { color: var(--color-primary); font-size: 14px; transition: var(--transition); }
+        .cat-list a:hover { color: var(--color-primary); border-color: var(--color-primary); }
+        .cat-list a:hover i { transform: translateX(4px); }
+
+        /* ============================================================
+           16. СЕКЦИЯ «КОНТАКТЫ»: фото слева + форма справа
+           ============================================================ */
+        .contact-section { display: grid; grid-template-columns: 1fr 1fr; background-color: #EFEFEF; border-top: 6px solid var(--color-primary); }
+        .contact-image-wrapper { height: 100%; overflow: hidden; position: relative; background: var(--color-bg-gray); }
+        .contact-image { width: 100%; height: 100%; object-fit: cover; min-height: 600px; transition: var(--transition-slow); }
+        .contact-image-wrapper:hover .contact-image { transform: scale(1.02); }
+        .contact-image-wrapper::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(106,26,26,0.06) 100%);
+            pointer-events: none;
+        }
+        .contact-form-wrapper { padding: 80px 10%; display: flex; flex-direction: column; justify-content: center; background: var(--color-bg-white); }
+        .contact-form-wrapper h2 { font-size: clamp(28px, 3.2vw, 40px); margin-bottom: 10px; font-weight: 400; }
+        .contact-form-wrapper > p { color: var(--color-text-muted); margin-bottom: 40px; font-size: 15px; }
+        /* Поля формы: только нижняя граница, при фокусе — бордовая */
+        .form-group { position: relative; margin-bottom: 30px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .form-control {
+            width: 100%; padding: 14px 0; border: none;
+            border-bottom: 2px solid #C4C4C4; background: transparent;
+            font-family: 'Inter', Arial, sans-serif; font-size: 15px;
+            color: var(--color-text-main); outline: none; transition: var(--transition); border-radius: 0;
+        }
+        .form-control::placeholder { color: #A0A0A0; font-weight: 300; }
+        .form-control:focus { border-bottom-color: var(--color-primary); }
+        .form-control.error { border-bottom-color: var(--color-error); } /* красная граница при ошибке */
+        .form-control.error ~ .error-msg { opacity: 1; transform: translateY(0); }
+        textarea.form-control { /* большое поле сообщения оформлено рамкой */
+            resize: vertical; min-height: 110px; border: 2px solid #C4C4C4;
+            padding: 16px; background: var(--color-bg-gray);
+            border-radius: var(--radius); margin-top: 4px;
+        }
+        textarea.form-control:focus { border-color: var(--color-primary); background: var(--color-bg-white); box-shadow: var(--shadow-sm); }
+        textarea.form-control.error { border-color: var(--color-error); }
+        .error-msg { /* текст ошибки под полем (скрыт, пока нет ошибки) */
+            color: var(--color-error); font-size: 12px; position: absolute;
+            bottom: -20px; left: 0; opacity: 0; transform: translateY(-4px);
+            transition: var(--transition); font-weight: 500;
+        }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin-top: 8px; margin-bottom: 32px; }
+        .checkbox-group input[type="checkbox"] { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer; flex-shrink: 0; }
+        .checkbox-group label { font-size: 13px; color: var(--color-text-muted); cursor: pointer; line-height: 1.5; }
+        .checkbox-group .error-msg { position: static; display: block; margin-top: 4px; opacity: 0; transform: none; }
+        .checkbox-group .error-msg.visible { opacity: 1; }
+        .submit-btn-wrapper { text-align: right; }
+        #success-box { /* зелёное сообщение об успешной отправке */
+            display: none; background: #F4FBF7; border: 1px solid #D1E7DD;
+            border-left: 5px solid var(--color-success);
+            padding: 20px 24px; margin-bottom: 30px; border-radius: var(--radius);
+        }
+        #success-box h4 { color: var(--color-success); margin-bottom: 4px; font-size: 16px; font-weight: 600; }
+        #success-box p { font-size: 14px; color: #0F5132; }
+
+        /* ============================================================
+           17. ПОДВАЛ САЙТА (тёмный, 4 колонки + нижнее меню)
+           ============================================================ */
+        .site-footer { background-color: var(--color-bg-footer); color: #B0B0B0; padding: 80px 0 30px; }
+        .footer-grid {
+            display: grid; grid-template-columns: 1.6fr 1fr 1.1fr 0.9fr;
+            gap: 40px; border-bottom: 1px solid #3E3E3E;
+            padding-bottom: 40px; margin-bottom: 40px;
+        }
+        .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .footer-emblem { width: 42px; height: 42px; color: var(--color-accent); flex-shrink: 0; }
+        .footer-logo-title { color: #fff; font-family: 'Playfair Display', serif; font-size: 22px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; line-height: 1.1; }
+        .footer-logo-subtitle { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; color: #888; font-weight: 600; margin-bottom: 20px; }
+        .footer-col h4 { color: #fff; font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 18px; font-weight: 700; }
+        .footer-col p { font-size: 13px; margin-bottom: 6px; line-height: 1.6; }
+        .footer-col p strong { color: #E5E5E5; font-weight: 600; }
+        .footer-col a:hover { color: #fff; text-decoration: underline; }
+        .footer-bottom { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; border-top: 1px solid #3E3E3E; padding-top: 30px; }
+        .footer-bottom a { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: #9A9A9A; }
+        .footer-bottom a:hover { color: #fff; }
+        .footer-copy { text-align: center; font-size: 11px; color: #6E6E6E; margin-top: 24px; letter-spacing: 0.5px; }
+
+        /* Круглая кнопка «наверх» (появляется после прокрутки) */
+        .scroll-top {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 48px; height: 48px; background: var(--color-primary);
+            color: #fff; border: none; border-radius: 50%; font-size: 20px;
+            cursor: pointer; box-shadow: var(--shadow-md);
+            transition: var(--transition); opacity: 0; transform: translateY(20px);
+            visibility: hidden; z-index: 50; display: flex; align-items: center; justify-content: center;
+        }
+        .scroll-top.visible { opacity: 1; transform: translateY(0); visibility: visible; }
+        .scroll-top:hover { background: var(--color-primary-hover); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+        /* ============================================================
+           18. АДАПТИВНОСТЬ: планшет (<=1024px)
+           ============================================================ */
+        @media (max-width: 1100px) {
+            .main-nav { gap: 16px; } /* уплотняем меню, когда пунктов много */
+        }
+        @media (max-width: 1024px) {
+            .hero-container { gap: 40px; flex-direction: column; } /* фото уходит под текст */
+            .hero-title { font-size: 34px; }
+            .hero-content { padding-right: 0; }
+            .hero-image-wrapper { height: 400px; width: 100%; }
+            .hero { background: var(--color-bg-gray); padding: 50px 0; min-height: auto; }
+            .about-grid, .categories-grid, .contact-section { grid-template-columns: 1fr; gap: 40px; }
+            .heritage-grid, .news-list, .cases-grid { grid-template-columns: repeat(2, 1fr); }
+            .services-tabs-widget { max-width: 100%; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+            .contact-image { min-height: 350px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .contact-form-wrapper { padding: 50px 30px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        }
+
+        /* ============================================================
+           19. АДАПТИВНОСТЬ: мобильные (<=768px)
+           Меню превращается в выдвижную панель, сетки — в 1 колонку.
+           ============================================================ */
+        @media (max-width: 768px) {
+            :root { --header-height: 70px; }
+            .top-bar { justify-content: center; padding: 10px 16px; flex-direction: column; text-align: center; gap: 8px; }
+            .lang-switch { margin-right: 0; justify-content: center; }
+            .top-info { font-size: 10px; margin: 0; }
+            .top-contact-box { padding: 12px 20px; border-radius: 0 0 6px 6px; width: 100%; align-items: center; }
+            .top-contact-box strong { font-size: 16px; }
+            .burger-btn { display: flex; } /* показываем «бургер» */
+            .main-nav { /* меню-«шторка» справа */
+                position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+                background: #fff; flex-direction: column; padding: 80px 30px 30px;
+                gap: 16px; box-shadow: var(--shadow-xl);
+                transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                overflow-y: auto; z-index: 100; align-items: flex-start;
+            }
+            .main-nav.open { right: 0; }
+            .main-nav a { font-size: 14px; padding: 10px 0; width: 100%; border-bottom: 1px solid var(--color-border); }
+            .main-nav a::after { display: none; }
+            .mobile-overlay.active { display: block; }
+            .header-inner { height: var(--header-height); }
+            .logo-img { height: 50px; }
+            .hero-title { font-size: 28px; }
+            .hero-subtitle { font-size: 14px; }
+            .hero-image-wrapper { height: 320px; }
+            .hero-badge { left: 16px; bottom: 16px; padding: 10px 14px; }
+            .drop-cap { font-size: 70px; }
+            .about-header { flex-wrap: wrap; justify-content: center; text-align: center; }
+            .about-brand { margin: 20px auto 0; width: 175px; }
+            .about-title h2 { font-size: 28px; }
+            .about-title p { font-size: 15px; }
+            .section-header h2 { font-size: 28px; }
+            .heritage-grid, .news-list, .cases-grid, .team-grid { grid-template-columns: 1fr; }
+            .heritage-card { aspect-ratio: 4/3; }
+            .categories-grid { grid-template-columns: 1fr; gap: 30px; }
+            .cat-list { grid-template-columns: 1fr; }
+            .cat-intro { padding: 30px 24px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .footer-brand { justify-content: center; }
+            .footer-bottom { flex-direction: column; align-items: center; gap: 12px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .stat-number { font-size: 30px; }
+            .contact-section { grid-template-columns: 1fr; }
+            .contact-image { min-height: 240px; }
+            .contact-form-wrapper { padding: 40px 20px; }
+            .services-tabs-widget { flex-direction: column; min-height: auto; }
+            .tabs-sidebar { flex-direction: row; width: 100%; height: 48px; } /* кнопки 01-04 становятся горизонтальными */
+            .tab-trigger { border-bottom: none; border-right: 1px solid var(--color-bg-white); }
+            .tab-trigger:last-child { border-right: none; }
+            .tab-content-area { padding: 20px; }
+            .tab-pane.active { flex-direction: column; align-items: center; text-align: center; }
+            .tab-text h3 { justify-content: center; }
+            .scroll-top { bottom: 20px; right: 20px; width: 42px; height: 42px; font-size: 17px; }
+        }
+        /* Самые узкие экраны (<=480px): кнопки на всю ширину */
+        @media (max-width: 480px) {
+            .hero-title { font-size: 24px; }
+            .hero-actions { flex-direction: column; width: 100%; }
+            .hero-actions .btn-primary, .hero-actions .btn-outline { width: 100%; justify-content: center; }
+            .stat-number { font-size: 26px; }
+            .stat-label { font-size: 11px; }
+        }
+
+        /* Уважение к системной настройке «уменьшить движение»:
+           отключаем все анимации для пользователей, которых укачивает */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+            .fade-in-up { opacity: 1 !important; transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+<!-- ================================================================
+     РАЗМЕТКА СТРАНИЦЫ.
+     Принцип перевода: у каждого текстового элемента есть атрибут
+     data-i18n="ключ" — скрипт подставляет текст нужного языка из
+     словаря I18N. Для подсказок в полях формы — data-i18n-ph.
+     ================================================================ -->
+
+    <!-- Скрытая ссылка для клавиатурной навигации (нажмите Tab) -->
+    <a href="#main-content" class="skip-link" data-i18n="skipLink">Перейти до основного контенту</a>
+
+    <!-- ============ ВЕРХНЯЯ ПАНЕЛЬ: языки / часы работы / контакты ============ -->
+    <div class="top-bar">
+        <!-- Переключатель языков. data-lang — код языка в словаре I18N -->
+        <div class="lang-switch" role="group" aria-label="Мова сайту / Site language">
+            <button type="button" class="lang-btn active" data-lang="ua">UA</button>
+            <button type="button" class="lang-btn" data-lang="ru">RU</button>
+            <button type="button" class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <span class="top-info">
+            <i class="fas fa-clock" aria-hidden="true"></i> <span data-i18n="topHours">Пн-Чт: 09:00–18:00 | Пт: 09:00–15:00 | Сб-Нд: за домовленістю</span>
+        </span>
+        <div class="top-contact-box">
+            <span><i class="fas fa-phone-alt" aria-hidden="true"></i> <span data-i18n="hotline">Гаряча лінія захисту:</span></span>
+            <strong><a href="tel:+380503046904" style="color:#fff;">(050) 304-69-04</a></strong>
+            <a href="mailto:havlawyer@gmail.com"><i class="fas fa-envelope" aria-hidden="true"></i> havlawyer@gmail.com</a>
+        </div>
+    </div>
+
+    <!-- ============ ШАПКА: логотип + главное меню ============ -->
+    <header class="main-header" id="header" role="banner">
+        <div class="container header-inner">
+            <!-- Логотип (PNG с прозрачным фоном, лежит рядом с этим файлом) -->
+            <a href="#" class="logo" aria-label="Харченко та партнери — на головну">
+                <img src="logo_harchenko.png" class="logo-img" alt="Харченко та партнери — юридичне об'єднання" width="326" height="268">
+            </a>
+            <!-- Кнопка мобильного меню (видна только на телефонах) -->
+            <button class="burger-btn" id="burgerBtn" aria-label="Меню" aria-expanded="false" aria-controls="mainNav">
+                <span></span><span></span><span></span>
+            </button>
+            <!-- Главное меню. Якоря ведут к секциям ниже -->
+            <nav class="main-nav" id="mainNav" aria-label="Головна навігація">
+                <a href="#" class="active" data-i18n="navHome">Головна</a>
+                <a href="#about" data-i18n="navAbout">Про об'єднання</a>
+                <a href="#team" data-i18n="navTeam">Команда</a>
+                <a href="#news" data-i18n="navNews">Новини</a>
+                <a href="#cases" data-i18n="navCases">Справи</a>
+                <a href="#practices" data-i18n="navPractices">Практики</a>
+                <a href="#contact" data-i18n="navContacts">Контакти</a>
+            </nav>
+        </div>
+    </header>
+    <!-- Затемнение позади мобильного меню (клик по нему закрывает меню) -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <!-- ============ ГЛАВНЫЙ ЭКРАН (HERO) ============ -->
+    <section class="hero" id="main-content" aria-labelledby="hero-title">
+        <div class="container hero-container">
+            <div class="hero-content fade-in-up">
+                <!-- Бейдж над заголовком -->
+                <span class="hero-eyebrow"><i class="fas fa-scale-balanced" aria-hidden="true"></i> <span data-i18n="eyebrow">Адвокатура у Полтаві з 2003 року</span></span>
+                <!-- Главный заголовок (переводится целиком, включая выделение) -->
+                <h1 class="hero-title" id="hero-title" data-i18n="heroTitle">
+                    Ваш надійний <br><span class="highlight">правовий щит</span> у Полтаві
+                </h1>
+                <p class="hero-subtitle" data-i18n="heroSubtitle">
+                    Професійні адвокати юридичного об'єднання «Харченко та партнери» забезпечать бездоганний захист інтересів вашого бізнесу у спорах з податковою та нададуть допомогу приватним особам.
+                </p>
+                <!-- Две кнопки: консультация (к форме) и подробнее (к «О нас») -->
+                <div class="hero-actions">
+                    <a href="#contact" class="btn-primary">
+                        <i class="fas fa-gavel" aria-hidden="true"></i> <span data-i18n="btnConsult">Замовити консультацію</span>
+                    </a>
+                    <a href="#about" class="btn-outline">
+                        <i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="btnMore">Дізнатись більше</span>
+                    </a>
+                </div>
+
+                <!-- Виджет-вкладки: 4 направления практики (кнопки 01-04 переключают) -->
+                <div class="services-tabs-widget">
+                    <div class="tab-content-area">
+                        <div class="tab-pane active" id="tab-01" role="tabpanel" aria-labelledby="tab-btn-01">
+                            <img src="https://images.unsplash.com/photo-1589391886645-d51941baf7fb?auto=format&fit=crop&w=200&q=80" alt="" class="tab-icon" loading="lazy" onerror="app.imgError(this)">
+                            <div class="tab-text">
+                                <h3><span class="number" aria-hidden="true">01</span> <span data-i18n="tab1Title">Господарські суди</span></h3>
+                                <p data-i18n="tab1Text">Представництво інтересів підприємств Полтави та області у судах. Стягнення заборгованості, банкрутство, корпоративні спори.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab-02" role="tabpanel" aria-labelledby="tab-btn-02">
+                            <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=200&q=80" alt="" class="tab-icon" loading="lazy" onerror="app.imgError(this)">
+                            <div class="tab-text">
+                                <h3><span class="number" aria-hidden="true">02</span> <span data-i18n="tab2Title">Податкові спори</span></h3>
+                                <p data-i18n="tab2Text">Оскарження ППР, розблокування податкових накладних, супровід податкових перевірок та оптимізація бізнесу.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab-03" role="tabpanel" aria-labelledby="tab-btn-03">
+                            <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=200&q=80" alt="" class="tab-icon" loading="lazy" onerror="app.imgError(this)">
+                            <div class="tab-text">
+                                <h3><span class="number" aria-hidden="true">03</span> <span data-i18n="tab3Title">Сімейне право</span></h3>
+                                <p data-i18n="tab3Text">Цивільні справи, розірвання шлюбу, поділ майна подружжя, аліментні спори та врегулювання майнових правовідносин.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab-04" role="tabpanel" aria-labelledby="tab-btn-04">
+                            <img src="https://images.unsplash.com/photo-1423592707957-3b212afa6733?auto=format&fit=crop&w=200&q=80" alt="" class="tab-icon" loading="lazy" onerror="app.imgError(this)">
+                            <div class="tab-text">
+                                <h3><span class="number" aria-hidden="true">04</span> <span data-i18n="tab4Title">Кримінальний захист</span></h3>
+                                <p data-i18n="tab4Text">Захист підозрюваних та обвинувачених на всіх етапах досудового розслідування та безпосередньо у судовому процесі.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tabs-sidebar" role="tablist" aria-label="Напрями практики">
+                        <button class="tab-trigger active" id="tab-btn-01" type="button" role="tab" aria-selected="true" aria-controls="tab-01" data-tab="01">01</button>
+                        <button class="tab-trigger" id="tab-btn-02" type="button" role="tab" aria-selected="false" aria-controls="tab-02" data-tab="02">02</button>
+                        <button class="tab-trigger" id="tab-btn-03" type="button" role="tab" aria-selected="false" aria-controls="tab-03" data-tab="03">03</button>
+                        <button class="tab-trigger" id="tab-btn-04" type="button" role="tab" aria-selected="false" aria-controls="tab-04" data-tab="04">04</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Фото Фемиды. Сначала пробуем локальный файл image_femida.jpg;
+                 если его нет — data-fallback (запасное фото из интернета) -->
+            <div class="hero-image-wrapper fade-in-up delay-2">
+                <img src="image_femida.jpg"
+                     data-fallback="https://images.unsplash.com/photo-1589578527966-fdac0f44566c?auto=format&fit=crop&w=900&q=80"
+                     alt="Феміда — богиня правосуддя" class="hero-image"
+                     loading="lazy" decoding="async" onerror="app.imgError(this)">
+                <!-- Плашка «20+ лет практики» поверх фото -->
+                <div class="hero-badge" aria-hidden="true">
+                    <i class="fas fa-award"></i>
+                    <div>
+                        <strong data-i18n="badgeYears">20+ років</strong>
+                        <span data-i18n="badgeText">адвокатської практики</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ПОЛОСА СТАТИСТИКИ ============
+         data-count — конечное число (анимируется от 0),
+         data-suffix — что дописать после числа (+, % или ничего) -->
+    <section class="stats-section" aria-label="Статистика">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item fade-in-up">
+                    <span class="stat-number" data-count="22" data-suffix="">0</span>
+                    <span class="stat-label" data-i18n="stat1">Років досвіду</span>
+                </div>
+                <div class="stat-item fade-in-up delay-1">
+                    <span class="stat-number" data-count="320" data-suffix="+">0</span>
+                    <span class="stat-label" data-i18n="stat2">Виграних справ</span>
+                </div>
+                <div class="stat-item fade-in-up delay-2">
+                    <span class="stat-number" data-count="98" data-suffix="%">0</span>
+                    <span class="stat-label" data-i18n="stat3">Успішних рішень</span>
+                </div>
+                <div class="stat-item fade-in-up delay-3">
+                    <span class="stat-number" data-count="12" data-suffix="">0</span>
+                    <span class="stat-label" data-i18n="stat4">Адвокатів у команді</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ СЕКЦИЯ «О ОБЪЕДИНЕНИИ» ============ -->
+    <section class="about-section" id="about" aria-labelledby="about-title">
+        <div class="container">
+            <!-- Шапка секции: буквица «Х», имя руководителя, адрес, портфолио -->
+            <div class="about-header fade-in-up">
+                <span class="drop-cap" aria-hidden="true">Х</span>
+                <div class="about-title">
+                    <h2 id="about-title" data-i18n="aboutName">Олександр Васильович Харченко</h2>
+                    <p data-i18n="aboutRole">Керуючий партнер юридичного об'єднання «Харченко та партнери»</p>
+                    <div class="meta">
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i> <span data-i18n="metaAddress">36014, м. Полтава, пров. Романа Шухевича, 4, каб. 11</span> &nbsp;|&nbsp;
+                        <i class="fas fa-certificate" aria-hidden="true"></i> <span data-i18n="metaCert">Свідоцтво № 376 від 26.11.2003</span>
+                    </div>
+                </div>
+                <!-- Фото фирменного портфолио (файл image_portfolio.jpg) -->
+                <figure class="about-brand">
+                    <img src="image_portfolio.jpg" alt="Фірмове портфоліо об'єднання" loading="lazy" decoding="async" onerror="app.imgError(this)">
+                </figure>
+            </div>
+            <!-- Приветственный текст в 2 колонки (4 абзаца) -->
+            <div class="about-grid fade-in-up delay-1">
+                <div>
+                    <p data-i18n="aboutP1">Вітаю вас на офіційному ресурсі юридичного об'єднання «Харченко та партнери». Наша компанія була заснована у самому серці Полтави з метою надання високопрофесійної юридичної допомоги як великому локальному бізнесу, так і приватним особам.</p>
+                    <p data-i18n="aboutP2">Ми не просто консультуємо — ми беремо на себе повну відповідальність за кінцевий результат вашої справи. Завдяки команді профільних експертів, ми забезпечуємо комплексне ведення судових спорів будь-якої складності, спираючись на багаторічну успішну практику в судах Полтавської області та Верховного Суду України.</p>
+                </div>
+                <div>
+                    <p data-i18n="aboutP3">Сьогодні особливим вектором розвитку нашого об'єднання є корпоративний захист підприємств Полтави. Ми успішно супроводжуємо господарські процеси, мінімізуємо тиск з боку контролюючих органів та надаємо надійну підтримку при податкових перевірках та оскарженні рішень ДПС.</p>
+                    <p data-i18n="aboutP4">Довіра наших клієнтів є головним капіталом об'єднання. Звернувшись до нас, ви отримуєте глибокий правовий аналіз, прозорі умови співпраці та гарантію конфіденційності ваших персональних та комерційних даних.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ СЕКЦИЯ «НАША КОМАНДА» ============
+         Карточки юристов создаёт скрипт из массива TEAM_DATA
+         (см. начало <script> внизу файла). Здесь только контейнер. -->
+    <section class="team-section" id="team" aria-labelledby="team-title">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2 id="team-title" data-i18n="teamTitle">Наша команда</h2>
+                <p data-i18n="teamSubtitle">Досвідчені адвокати та юристи, які щодня захищають інтереси клієнтів у судах Полтавщини.</p>
+            </div>
+            <div class="team-grid" id="teamGrid"><!-- карточки добавит JS --></div>
+        </div>
+    </section>
+
+    <!-- ============ СЕКЦИЯ «НОВОСТИ И ПРАКТИКА ВЕРХОВНОГО СУДА» ============
+         Карточки создаёт скрипт из массива NEWS_DATA. -->
+    <section class="news-section" id="news" aria-labelledby="news-title">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2 id="news-title" data-i18n="newsTitle">Новини та практика Верховного Суду</h2>
+                <p data-i18n="newsSubtitle">Свіжі правові позиції Верховного Суду України та новини об'єднання.</p>
+            </div>
+            <div class="news-list" id="newsList"><!-- карточки добавит JS --></div>
+        </div>
+    </section>
+
+    <!-- ============ СЕКЦИЯ «ВЫИГРАННЫЕ ДЕЛА» ============
+         Карточки создаёт скрипт из массива CASES_DATA. -->
+    <section class="cases-section" id="cases" aria-labelledby="cases-title">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2 id="cases-title" data-i18n="casesTitle">Виграні справи</h2>
+                <p data-i18n="casesSubtitle">Реальні результати нашої роботи в судах. Деталі справ знеособлені з міркувань адвокатської таємниці.</p>
+            </div>
+            <div class="cases-grid" id="casesGrid"><!-- карточки добавит JS --></div>
+        </div>
+    </section>
+
+    <!-- ============ СЕКЦИЯ «ПОЛТАВЩИНА» (три фотокарточки) ============ -->
+    <section class="poltava-heritage" id="poltava" aria-labelledby="heritage-title">
+        <div class="container">
+            <div class="section-header fade-in-up">
+                <h2 id="heritage-title" data-i18n="heritageTitle">Глибокі правові традиції Полтавщини</h2>
+                <p data-i18n="heritageSubtitle">Наша діяльність тісно переплетена з історією, державними інституціями та розвитком ділової спільноти Полтави.</p>
+            </div>
+            <div class="heritage-grid">
+                <div class="heritage-card fade-in-up delay-1">
+                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=600&q=80" alt="Юридична освіта" loading="lazy" decoding="async" onerror="app.imgError(this)">
+                    <div class="heritage-overlay">
+                        <h3 data-i18n="her1Title">Академічна база</h3>
+                        <p data-i18n="her1Text">Наші адвокати є випускниками провідних юридичних інститутів країни, включаючи авторитетні правові кафедри Полтавщини.</p>
+                    </div>
+                </div>
+                <div class="heritage-card fade-in-up delay-2">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Судова система" loading="lazy" decoding="async" onerror="app.imgError(this)">
+                    <div class="heritage-overlay">
+                        <h3 data-i18n="her2Title">Судовий захист</h3>
+                        <p data-i18n="her2Text">Щоденна участь та доведений успіх у цивільних, апеляційних та Господарських судах Полтави та всієї Полтавської області.</p>
+                    </div>
+                </div>
+                <div class="heritage-card fade-in-up delay-3">
+                    <!-- Локальное фото здания ЦНАП «Дія» (image_poltava_office.jpg) -->
+                    <img src="image_poltava_office.jpg" data-fallback="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80" alt="Діловий центр Полтави" loading="lazy" decoding="async" onerror="app.imgError(this)">
+                    <div class="heritage-overlay">
+                        <h3 data-i18n="her3Title">Діловий та історичний центр</h3>
+                        <p data-i18n="her3Text">Головний офіс нашого об'єднання знаходиться у центрі міста, в пішій доступності від ключових адміністративних і судових установ.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ СЕКЦИЯ «ПРАКТИКИ» (список из 10 услуг) ============ -->
+    <section class="categories-section" id="practices" aria-labelledby="practices-title">
+        <div class="container categories-grid">
+            <div class="cat-intro fade-in-up">
+                <div class="cat-intro-content">
+                    <span class="drop-cap-small" aria-hidden="true">П</span>
+                    <div>
+                        <h3 id="practices-title" data-i18n="practicesTitle">Потребуєте захисту бізнесу в судах Полтави?</h3>
+                        <p data-i18n="practicesText">Об'єднання <strong>«Харченко та партнери»</strong> спеціалізується на захисті компаній Полтавської області у спорах з податковою, господарських правовідносинах та складному сімейному праві.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Каждый пункт ведёт к форме контактов -->
+            <div class="fade-in-up delay-1">
+                <ul class="cat-list">
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac1">Господарські суди та спори</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac2">Оскарження рішень ДПС</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac3">Податкове планування бізнесу</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac4">Супровід компаній Полтави</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac5">Шлюборозлучні процеси</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac6">Розподіл майна подружжя</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac7">Визначення місця проживання дитини</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac8">Кримінальний захист у суді</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac9">Корпоративне право та договори</span></a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right" aria-hidden="true"></i> <span data-i18n="prac10">Врегулювання стягнень та боргів</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ СЕКЦИЯ «КОНТАКТЫ»: фото + форма запроса ============ -->
+    <section class="contact-section" id="contact" aria-labelledby="contact-title">
+        <!-- Фото весов правосудия (локальный файл image_teresy.jpg, иначе запасное) -->
+        <div class="contact-image-wrapper">
+            <img src="image_teresy.jpg"
+                 data-fallback="https://images.unsplash.com/photo-1436450412740-6b988f486c6b?auto=format&fit=crop&w=1000&q=80"
+                 alt="Терези правосуддя" class="contact-image"
+                 loading="lazy" decoding="async" onerror="app.imgError(this)">
+        </div>
+        <div class="contact-form-wrapper">
+            <h2 id="contact-title" data-i18n="contactTitle">Надіслати запит</h2>
+            <p data-i18n="contactSubtitle">Залиште контактні дані. Черговий адвокат нашого об'єднання зв'яжеться з вами для детального аналізу ситуації.</p>
+            <!-- Зелёное сообщение (показывается после успешной отправки) -->
+            <div id="success-box" role="alert">
+                <h4><i class="fas fa-check-circle" aria-hidden="true"></i> <span data-i18n="successTitle">Повідомлення успішно відправлено!</span></h4>
+                <p data-i18n="successText">Дякуємо за звернення до «Харченко та партнери». Фахівець зв'яжеться з вами найближчим часом для надання правової допомоги.</p>
+            </div>
+            <!-- Форма. novalidate — отключаем браузерную проверку, у нас своя -->
+            <form id="contact-form" novalidate>
+                <div class="form-group">
+                    <input type="text" id="f-name" class="form-control" placeholder="Ваше ім'я *" data-i18n-ph="phName" required aria-required="true" autocomplete="given-name">
+                    <span class="error-msg" id="name-error" data-i18n="errName">Будь ласка, вкажіть ваше ім'я (щонайменше 2 символи)</span>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="f-address" class="form-control" placeholder="Ваша адреса чи назва компанії (напр., Полтава, ТОВ «Старт»)" data-i18n-ph="phCompany" autocomplete="organization">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="tel" id="f-phone" class="form-control" placeholder="Телефон (+380 XX XXX XX XX) *" data-i18n-ph="phPhone" required aria-required="true" autocomplete="tel">
+                        <span class="error-msg" id="phone-error" data-i18n="errPhone">Будь ласка, вкажіть коректний номер телефону</span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="f-email" class="form-control" placeholder="E-Mail *" data-i18n-ph="phEmail" required aria-required="true" autocomplete="email">
+                        <span class="error-msg" id="email-error" data-i18n="errEmail">Будь ласка, вкажіть дійсний E-Mail</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <textarea id="f-message" class="form-control" placeholder="Опишіть суть вашого правового питання *" data-i18n-ph="phMessage" required aria-required="true" rows="4"></textarea>
+                    <span class="error-msg" id="message-error" data-i18n="errMessage">Будь ласка, опишіть ваше звернення до нас</span>
+                </div>
+                <!-- Согласие на обработку персональных данных (обязательное) -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="f-consent" required aria-required="true">
+                    <label for="f-consent">
+                        <span data-i18n="consent">Я даю безумовну згоду на обробку моїх персональних даних відповідно до законодавства України про захист інформації.</span>
+                        <span class="error-msg" id="consent-error" data-i18n="errConsent">* Згода є обов'язковою для відправлення запиту</span>
+                    </label>
+                </div>
+                <div class="submit-btn-wrapper">
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i> <span data-i18n="submitBtn">Надіслати зараз</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ============ ПОДВАЛ ============ -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Колонка 1: эмблема + описание -->
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <svg class="footer-emblem" viewBox="0 0 64 64" role="img" aria-hidden="true" focusable="false">
+                            <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M32 7 l4 5 -4 5 -4 -5 z" fill="currentColor" stroke="none"/>
+                                <line x1="32" y1="17" x2="32" y2="50"/>
+                                <line x1="12" y1="21" x2="52" y2="21"/>
+                                <circle cx="32" cy="21" r="2.4" fill="currentColor" stroke="none"/>
+                                <line x1="12" y1="21" x2="7" y2="31"/>
+                                <line x1="12" y1="21" x2="17" y2="31"/>
+                                <path d="M6 31 Q12 41 18 31"/>
+                                <line x1="52" y1="21" x2="47" y2="31"/>
+                                <line x1="52" y1="21" x2="57" y2="31"/>
+                                <path d="M46 31 Q52 41 58 31"/>
+                                <path d="M25 52 Q32 46 39 52"/>
+                                <line x1="23" y1="53" x2="41" y2="53"/>
+                            </g>
+                        </svg>
+                        <div class="footer-logo-title">Харченко<br>та партнери</div>
+                    </div>
+                    <div class="footer-logo-subtitle" data-i18n="footerSubtitle">Юридичне об'єднання</div>
+                    <p data-i18n="footerAbout">Високі стандарти правозахисної адвокатури, супровід бізнесу та орієнтація на результат у Господарських судах Полтавської області.</p>
+                </div>
+                <!-- Колонка 2: адрес -->
+                <div class="footer-col">
+                    <h4><i class="fas fa-map-marker-alt" aria-hidden="true"></i> <span data-i18n="footerAddressTitle">Адреса офісу</span></h4>
+                    <p data-i18n="footerAddress1">пров. Романа Шухевича, 4, каб. 11</p>
+                    <p data-i18n="footerAddress2">36014 м. Полтава, Україна</p>
+                </div>
+                <!-- Колонка 3: телефон и почта -->
+                <div class="footer-col">
+                    <h4><i class="fas fa-phone" aria-hidden="true"></i> <span data-i18n="footerContactTitle">Зворотний зв'язок</span></h4>
+                    <p><strong data-i18n="phoneLabel">Тел:</strong> <a href="tel:+380503046904" style="color:#B0B0B0;">(050) 304-69-04</a></p>
+                    <p><strong>E-Mail:</strong> <a href="mailto:havlawyer@gmail.com" style="color:#B0B0B0;">havlawyer@gmail.com</a></p>
+                </div>
+                <!-- Колонка 4: часы работы -->
+                <div class="footer-col">
+                    <h4><i class="fas fa-clock" aria-hidden="true"></i> <span data-i18n="footerHoursTitle">Час роботи</span></h4>
+                    <p data-i18n="footerHours1">Пн–Чт: 09:00–18:00</p>
+                    <p data-i18n="footerHours2">Пт: 09:00–15:00</p>
+                    <p data-i18n="footerHours3">Сб–Нд: Вихідні (черговий адвокат на зв'язку)</p>
+                </div>
+            </div>
+            <!-- Нижнее меню подвала -->
+            <div class="footer-bottom">
+                <a href="#" data-i18n="navHome">Головна</a>
+                <a href="#about" data-i18n="navAbout">Про об'єднання</a>
+                <a href="#team" data-i18n="navTeam">Команда</a>
+                <a href="#news" data-i18n="navNews">Новини</a>
+                <a href="#practices" data-i18n="navPractices">Практики</a>
+                <a href="#contact" data-i18n="navContacts">Контакти</a>
+                <a href="#" data-i18n="footerPrivacy">Політика конфіденційності</a>
+            </div>
+            <!-- Копирайт (год подставляется скриптом автоматически) -->
+            <p class="footer-copy">© <span id="year">2026</span> <span data-i18n="copyright">Юридичне об'єднання «Харченко та партнери». Усі права захищено.</span></p>
+        </div>
+    </footer>
+
+    <!-- Кнопка «прокрутить наверх» -->
+    <button class="scroll-top" id="scrollTopBtn" type="button" aria-label="Нагору">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <script>
+    /* ****************************************************************
+       ****************************************************************
+         БЛОК 1. РЕДАКТИРУЕМЫЙ КОНТЕНТ САЙТА
+         Это единственное место, которое нужно править, чтобы:
+           • добавить новость            -> массив NEWS_DATA
+           • добавить выигранное дело    -> массив CASES_DATA
+           • добавить/изменить юриста    -> массив TEAM_DATA
+         Каждая запись — объект в фигурных скобках { ... },
+         записи разделяются запятыми. Новые добавляйте В НАЧАЛО
+         массива — тогда они появятся первыми на сайте.
+         Тексты задаются на трёх языках: ua / ru / en.
+         Если какой-то перевод не заполнен — показывается украинский.
+       ****************************************************************
+       **************************************************************** */
+
+    /* ================================================================
+       НОВОСТИ (решения Верховного Суда Украины + новости объединения).
+       Поля записи:
+         date    — дата в формате "ГГГГ-ММ-ДД" (показывается по-местному)
+         link    — ссылка на полный текст решения в Едином реестре
+                   судебных решений (https://reyestr.court.gov.ua/...).
+                   Если ссылки нет — оставьте пустую строку "".
+         tag     — рубрика (короткая), title — заголовок, text — анонс.
+       --- ШАБЛОН ДЛЯ КОПИРОВАНИЯ (вставьте сразу после "= [") ---------
+        {
+            date: "2026-01-01",
+            link: "",
+            tag:   { ua: "Рубрика",   ru: "Рубрика",   en: "Category" },
+            title: { ua: "Заголовок", ru: "Заголовок", en: "Title" },
+            text:  { ua: "Текст...",  ru: "Текст...",  en: "Text..." }
+        },
+       ---------------------------------------------------------------- */
+    const NEWS_DATA = [
+        {   /* ПРИМЕР 1 — замените реальной новостью */
+            date: "2026-06-18",
+            link: "https://reyestr.court.gov.ua/",
+            tag:   { ua: "Податкові спори", ru: "Налоговые споры", en: "Tax disputes" },
+            title: {
+                ua: "Верховний Суд: зупинення реєстрації податкової накладної має бути вмотивованим",
+                ru: "Верховный Суд: остановка регистрации налоговой накладной должна быть мотивированной",
+                en: "Supreme Court: suspension of tax invoice registration must be reasoned"
+            },
+            text: {
+                ua: "Касаційний адміністративний суд у складі ВС підтвердив: квитанція про зупинення реєстрації ПН без конкретних причин є протиправною, а накладна підлягає реєстрації.",
+                ru: "Кассационный административный суд в составе ВС подтвердил: квитанция об остановке регистрации НН без конкретных причин противоправна, а накладная подлежит регистрации.",
+                en: "The Administrative Cassation Court confirmed that suspending a tax invoice without specific reasons is unlawful and the invoice must be registered."
+            }
+        },
+        {   /* ПРИМЕР 2 — замените реальной новостью */
+            date: "2026-05-27",
+            link: "https://reyestr.court.gov.ua/",
+            tag:   { ua: "Сімейне право", ru: "Семейное право", en: "Family law" },
+            title: {
+                ua: "ВС висловився щодо поділу майна, набутого у цивільному шлюбі",
+                ru: "ВС высказался о разделе имущества, приобретённого в гражданском браке",
+                en: "Supreme Court on dividing property acquired in a civil partnership"
+            },
+            text: {
+                ua: "Велика Палата ВС нагадала критерії визнання майна спільним для осіб, які проживали однією сім'єю без реєстрації шлюбу: спільний побут та спільний бюджет мають бути доведені.",
+                ru: "Большая Палата ВС напомнила критерии признания имущества общим для лиц, проживавших одной семьёй без регистрации брака: совместный быт и общий бюджет должны быть доказаны.",
+                en: "The Grand Chamber reiterated the criteria for recognising property as jointly owned by unmarried partners: a shared household and budget must be proven."
+            }
+        },
+        {   /* ПРИМЕР 3 — новость самого объединения (без ссылки) */
+            date: "2026-04-09",
+            link: "",
+            tag:   { ua: "Новини об'єднання", ru: "Новости объединения", en: "Firm news" },
+            title: {
+                ua: "Наше об'єднання захистило полтавського виробника від донарахувань ДПС",
+                ru: "Наше объединение защитило полтавского производителя от доначислений ГНС",
+                en: "Our firm defended a Poltava manufacturer against tax reassessments"
+            },
+            text: {
+                ua: "Суд повністю скасував податкові повідомлення-рішення на суму понад 2 млн грн. Рішення набрало законної сили.",
+                ru: "Суд полностью отменил налоговые уведомления-решения на сумму более 2 млн грн. Решение вступило в законную силу.",
+                en: "The court fully cancelled tax assessment notices exceeding UAH 2 million. The judgment is final."
+            }
+        }
+    ];
+
+    /* ================================================================
+       ВЫИГРАННЫЕ ДЕЛА. Поля записи:
+         year   — год решения (число),
+         tag    — категория дела, court — название суда,
+         title  — краткая суть, desc — описание (обезличенное),
+         result — итог дела (выводится в зелёной плашке).
+       --- ШАБЛОН ДЛЯ КОПИРОВАНИЯ --------------------------------------
+        {
+            year: 2026,
+            tag:    { ua: "Категорія",  ru: "Категория",  en: "Category" },
+            court:  { ua: "Суд",        ru: "Суд",        en: "Court" },
+            title:  { ua: "Суть",       ru: "Суть",       en: "Subject" },
+            desc:   { ua: "Опис...",    ru: "Описание...", en: "Description..." },
+            result: { ua: "Підсумок",   ru: "Итог",       en: "Outcome" }
+        },
+       ---------------------------------------------------------------- */
+    const CASES_DATA = [
+        {   /* ПРИМЕР 1 — замените реальным делом */
+            year: 2025,
+            tag:   { ua: "Податковий спір", ru: "Налоговый спор", en: "Tax dispute" },
+            court: {
+                ua: "Господарський суд Полтавської області",
+                ru: "Хозяйственный суд Полтавской области",
+                en: "Commercial Court of Poltava Region"
+            },
+            title: {
+                ua: "Оскарження податкових повідомлень-рішень",
+                ru: "Обжалование налоговых уведомлений-решений",
+                en: "Challenging tax assessment notices"
+            },
+            desc: {
+                ua: "Захист виробничого ТОВ за результатами планової документальної перевірки: спірні донарахування з ПДВ та податку на прибуток.",
+                ru: "Защита производственного ООО по результатам плановой документальной проверки: спорные доначисления по НДС и налогу на прибыль.",
+                en: "Defending a manufacturing LLC after a scheduled tax audit: disputed VAT and profit tax reassessments."
+            },
+            result: {
+                ua: "ППР скасовано повністю — знято 2,1 млн грн донарахувань.",
+                ru: "Уведомления отменены полностью — снято 2,1 млн грн доначислений.",
+                en: "Notices fully cancelled — UAH 2.1 million in reassessments removed."
+            }
+        },
+        {   /* ПРИМЕР 2 */
+            year: 2025,
+            tag:   { ua: "Сімейна справа", ru: "Семейное дело", en: "Family case" },
+            court: {
+                ua: "Полтавський апеляційний суд",
+                ru: "Полтавский апелляционный суд",
+                en: "Poltava Court of Appeal"
+            },
+            title: {
+                ua: "Поділ спільного майна подружжя",
+                ru: "Раздел общего имущества супругов",
+                en: "Division of marital property"
+            },
+            desc: {
+                ua: "Спір щодо квартири, автомобіля та корпоративних прав, набутих за час шлюбу. Доведено внесок клієнтки у придбання активів.",
+                ru: "Спор о квартире, автомобиле и корпоративных правах, приобретённых в браке. Доказан вклад клиентки в приобретение активов.",
+                en: "Dispute over an apartment, a car and corporate rights acquired during marriage. The client's contribution was proven."
+            },
+            result: {
+                ua: "За клієнткою визнано право власності на 2/3 спільного майна.",
+                ru: "За клиенткой признано право собственности на 2/3 общего имущества.",
+                en: "The client was awarded ownership of 2/3 of the joint property."
+            }
+        },
+        {   /* ПРИМЕР 3 */
+            year: 2024,
+            tag:   { ua: "Кримінальний захист", ru: "Уголовная защита", en: "Criminal defence" },
+            court: {
+                ua: "Районний суд м. Полтави",
+                ru: "Районный суд г. Полтавы",
+                en: "District Court of Poltava"
+            },
+            title: {
+                ua: "Захист директора підприємства (ст. 212 КК)",
+                ru: "Защита директора предприятия (ст. 212 УК)",
+                en: "Defence of a company director (Art. 212 CC)"
+            },
+            desc: {
+                ua: "Обвинувачення в ухиленні від сплати податків. Доведено відсутність умислу та помилковість висновків експертизи сторони обвинувачення.",
+                ru: "Обвинение в уклонении от уплаты налогов. Доказано отсутствие умысла и ошибочность выводов экспертизы стороны обвинения.",
+                en: "Tax evasion charges. We proved the absence of intent and the flaws in the prosecution's expert findings."
+            },
+            result: {
+                ua: "Кримінальне провадження закрито, підозру знято.",
+                ru: "Уголовное производство закрыто, подозрение снято.",
+                en: "The criminal proceedings were closed and the suspicion withdrawn."
+            }
+        }
+    ];
+
+    /* ================================================================
+       КОМАНДА ОБЪЕДИНЕНИЯ. Поля записи:
+         photo — имя файла с фотографией (положите файл рядом с этим
+                 HTML, напр. "team_ivanov.jpg"). Если фото нет —
+                 оставьте "" и сайт нарисует аватар с инициалами.
+         initials — 1-2 буквы для аватара-заглушки,
+         years — стаж (число, показывается внизу карточки),
+         name / role / exp — имя, должность и описание опыта (3 языка).
+       ВНИМАНИЕ: записи №2-4 — ПРИМЕРЫ, замените своими сотрудниками.
+       --- ШАБЛОН ДЛЯ КОПИРОВАНИЯ --------------------------------------
+        {
+            photo: "", initials: "АБ", years: 10,
+            name: { ua: "Ім'я",     ru: "Имя",       en: "Name" },
+            role: { ua: "Посада",   ru: "Должность", en: "Position" },
+            exp:  { ua: "Досвід...", ru: "Опыт...",  en: "Experience..." }
+        },
+       ---------------------------------------------------------------- */
+    const TEAM_DATA = [
+        {
+            photo: "team_kharchenko.jpg",  /* положите фото с таким именем рядом с сайтом */
+            initials: "ОХ",
+            years: 22,
+            name: {
+                ua: "Олександр Харченко",
+                ru: "Александр Харченко",
+                en: "Oleksandr Kharchenko"
+            },
+            role: {
+                ua: "Керуючий партнер, адвокат",
+                ru: "Управляющий партнёр, адвокат",
+                en: "Managing partner, attorney"
+            },
+            exp: {
+                ua: "Понад 20 років судової практики. Спеціалізація — податкові та господарські спори, захист бізнесу від тиску контролюючих органів. Свідоцтво адвоката № 376 від 26.11.2003.",
+                ru: "Более 20 лет судебной практики. Специализация — налоговые и хозяйственные споры, защита бизнеса от давления контролирующих органов. Свидетельство адвоката № 376 от 26.11.2003.",
+                en: "Over 20 years of litigation practice. Specialises in tax and commercial disputes and protecting businesses from regulatory pressure. Attorney certificate No. 376 (2003)."
+            }
+        },
+        {   /* ПРИМЕР — замените реальным сотрудником */
+            photo: "",
+            initials: "ІК",
+            years: 12,
+            name: { ua: "Ірина Коваленко", ru: "Ирина Коваленко", en: "Iryna Kovalenko" },
+            role: { ua: "Адвокат, сімейне право", ru: "Адвокат, семейное право", en: "Attorney, family law" },
+            exp: {
+                ua: "Веде шлюборозлучні процеси, спори про поділ майна та визначення місця проживання дитини. Медіатор у сімейних конфліктах.",
+                ru: "Ведёт бракоразводные процессы, споры о разделе имущества и определении места жительства ребёнка. Медиатор в семейных конфликтах.",
+                en: "Handles divorce proceedings, property division and child residence disputes. Mediator in family conflicts."
+            }
+        },
+        {   /* ПРИМЕР — замените реальным сотрудником */
+            photo: "",
+            initials: "ДС",
+            years: 15,
+            name: { ua: "Дмитро Савченко", ru: "Дмитрий Савченко", en: "Dmytro Savchenko" },
+            role: { ua: "Адвокат, кримінальний захист", ru: "Адвокат, уголовная защита", en: "Attorney, criminal defence" },
+            exp: {
+                ua: "Захист у кримінальних провадженнях щодо службових та економічних злочинів на всіх стадіях — від обшуку до касації.",
+                ru: "Защита в уголовных производствах о служебных и экономических преступлениях на всех стадиях — от обыска до кассации.",
+                en: "Defence in criminal proceedings on white-collar and economic offences at every stage — from search to cassation."
+            }
+        },
+        {   /* ПРИМЕР — замените реальным сотрудником */
+            photo: "",
+            initials: "ОМ",
+            years: 8,
+            name: { ua: "Олена Мельник", ru: "Елена Мельник", en: "Olena Melnyk" },
+            role: { ua: "Юрист, корпоративне право", ru: "Юрист, корпоративное право", en: "Lawyer, corporate law" },
+            exp: {
+                ua: "Договірна робота, супровід ТОВ та ФОП, реєстраційні дії, корпоративні договори та захист інтересів учасників товариств.",
+                ru: "Договорная работа, сопровождение ООО и ФЛП, регистрационные действия, корпоративные договоры и защита интересов участников обществ.",
+                en: "Contract work, support of LLCs and entrepreneurs, registrations, corporate agreements and shareholder protection."
+            }
+        }
+    ];
+
+    /* ****************************************************************
+         БЛОК 2. СЛОВАРЬ ПЕРЕВОДОВ ИНТЕРФЕЙСА (I18N)
+         Три языка: ua (украинский), ru (русский), en (английский).
+         Ключ словаря соответствует атрибуту data-i18n в разметке.
+         Ключи heroTitle и practicesText содержат HTML (выделения),
+         поэтому перечислены в HTML_KEYS ниже.
+       **************************************************************** */
+    const I18N = {
+        /* ---------------- УКРАИНСКИЙ (язык по умолчанию) ---------------- */
+        ua: {
+            titleTag: "Юридичне об'єднання «Харченко та партнери» | Полтава",
+            skipLink: "Перейти до основного контенту",
+            topHours: "Пн-Чт: 09:00–18:00 | Пт: 09:00–15:00 | Сб-Нд: за домовленістю",
+            hotline: "Гаряча лінія захисту:",
+            navHome: "Головна", navAbout: "Про об'єднання", navTeam: "Команда",
+            navNews: "Новини", navCases: "Справи", navPractices: "Практики", navContacts: "Контакти",
+            eyebrow: "Адвокатура у Полтаві з 2003 року",
+            heroTitle: "Ваш надійний <br><span class=\"highlight\">правовий щит</span> у Полтаві",
+            heroSubtitle: "Професійні адвокати юридичного об'єднання «Харченко та партнери» забезпечать бездоганний захист інтересів вашого бізнесу у спорах з податковою та нададуть допомогу приватним особам.",
+            btnConsult: "Замовити консультацію", btnMore: "Дізнатись більше",
+            badgeYears: "20+ років", badgeText: "адвокатської практики",
+            tab1Title: "Господарські суди",
+            tab1Text: "Представництво інтересів підприємств Полтави та області у судах. Стягнення заборгованості, банкрутство, корпоративні спори.",
+            tab2Title: "Податкові спори",
+            tab2Text: "Оскарження ППР, розблокування податкових накладних, супровід податкових перевірок та оптимізація бізнесу.",
+            tab3Title: "Сімейне право",
+            tab3Text: "Цивільні справи, розірвання шлюбу, поділ майна подружжя, аліментні спори та врегулювання майнових правовідносин.",
+            tab4Title: "Кримінальний захист",
+            tab4Text: "Захист підозрюваних та обвинувачених на всіх етапах досудового розслідування та безпосередньо у судовому процесі.",
+            stat1: "Років досвіду", stat2: "Виграних справ", stat3: "Успішних рішень", stat4: "Адвокатів у команді",
+            aboutName: "Олександр Васильович Харченко",
+            aboutRole: "Керуючий партнер юридичного об'єднання «Харченко та партнери»",
+            metaAddress: "36014, м. Полтава, пров. Романа Шухевича, 4, каб. 11",
+            metaCert: "Свідоцтво № 376 від 26.11.2003",
+            aboutP1: "Вітаю вас на офіційному ресурсі юридичного об'єднання «Харченко та партнери». Наша компанія була заснована у самому серці Полтави з метою надання високопрофесійної юридичної допомоги як великому локальному бізнесу, так і приватним особам.",
+            aboutP2: "Ми не просто консультуємо — ми беремо на себе повну відповідальність за кінцевий результат вашої справи. Завдяки команді профільних експертів, ми забезпечуємо комплексне ведення судових спорів будь-якої складності, спираючись на багаторічну успішну практику в судах Полтавської області та Верховного Суду України.",
+            aboutP3: "Сьогодні особливим вектором розвитку нашого об'єднання є корпоративний захист підприємств Полтави. Ми успішно супроводжуємо господарські процеси, мінімізуємо тиск з боку контролюючих органів та надаємо надійну підтримку при податкових перевірках та оскарженні рішень ДПС.",
+            aboutP4: "Довіра наших клієнтів є головним капіталом об'єднання. Звернувшись до нас, ви отримуєте глибокий правовий аналіз, прозорі умови співпраці та гарантію конфіденційності ваших персональних та комерційних даних.",
+            teamTitle: "Наша команда",
+            teamSubtitle: "Досвідчені адвокати та юристи, які щодня захищають інтереси клієнтів у судах Полтавщини.",
+            teamYears: "років досвіду",
+            newsTitle: "Новини та практика Верховного Суду",
+            newsSubtitle: "Свіжі правові позиції Верховного Суду України та новини об'єднання.",
+            newsRead: "Читати рішення",
+            casesTitle: "Виграні справи",
+            casesSubtitle: "Реальні результати нашої роботи в судах. Деталі справ знеособлені з міркувань адвокатської таємниці.",
+            caseResultLabel: "Результат",
+            heritageTitle: "Глибокі правові традиції Полтавщини",
+            heritageSubtitle: "Наша діяльність тісно переплетена з історією, державними інституціями та розвитком ділової спільноти Полтави.",
+            her1Title: "Академічна база",
+            her1Text: "Наші адвокати є випускниками провідних юридичних інститутів країни, включаючи авторитетні правові кафедри Полтавщини.",
+            her2Title: "Судовий захист",
+            her2Text: "Щоденна участь та доведений успіх у цивільних, апеляційних та Господарських судах Полтави та всієї Полтавської області.",
+            her3Title: "Діловий та історичний центр",
+            her3Text: "Головний офіс нашого об'єднання знаходиться у центрі міста, в пішій доступності від ключових адміністративних і судових установ.",
+            practicesTitle: "Потребуєте захисту бізнесу в судах Полтави?",
+            practicesText: "Об'єднання <strong>«Харченко та партнери»</strong> спеціалізується на захисті компаній Полтавської області у спорах з податковою, господарських правовідносинах та складному сімейному праві.",
+            prac1: "Господарські суди та спори", prac2: "Оскарження рішень ДПС",
+            prac3: "Податкове планування бізнесу", prac4: "Супровід компаній Полтави",
+            prac5: "Шлюборозлучні процеси", prac6: "Розподіл майна подружжя",
+            prac7: "Визначення місця проживання дитини", prac8: "Кримінальний захист у суді",
+            prac9: "Корпоративне право та договори", prac10: "Врегулювання стягнень та боргів",
+            contactTitle: "Надіслати запит",
+            contactSubtitle: "Залиште контактні дані. Черговий адвокат нашого об'єднання зв'яжеться з вами для детального аналізу ситуації.",
+            successTitle: "Повідомлення успішно відправлено!",
+            successText: "Дякуємо за звернення до «Харченко та партнери». Фахівець зв'яжеться з вами найближчим часом для надання правової допомоги.",
+            phName: "Ваше ім'я *",
+            phCompany: "Ваша адреса чи назва компанії (напр., Полтава, ТОВ «Старт»)",
+            phPhone: "Телефон (+380 XX XXX XX XX) *",
+            phEmail: "E-Mail *",
+            phMessage: "Опишіть суть вашого правового питання (напр. податковий спір, представництво у суді тощо) *",
+            errName: "Будь ласка, вкажіть ваше ім'я (щонайменше 2 символи)",
+            errPhone: "Будь ласка, вкажіть коректний номер телефону",
+            errEmail: "Будь ласка, вкажіть дійсний E-Mail",
+            errMessage: "Будь ласка, опишіть ваше звернення до нас",
+            consent: "Я даю безумовну згоду на обробку моїх персональних даних відповідно до законодавства України про захист інформації.",
+            errConsent: "* Згода є обов'язковою для відправлення запиту",
+            submitBtn: "Надіслати зараз", submitting: "Надсилання...",
+            footerSubtitle: "Юридичне об'єднання",
+            footerAbout: "Високі стандарти правозахисної адвокатури, супровід бізнесу та орієнтація на результат у Господарських судах Полтавської області.",
+            footerAddressTitle: "Адреса офісу",
+            footerAddress1: "пров. Романа Шухевича, 4, каб. 11",
+            footerAddress2: "36014 м. Полтава, Україна",
+            footerContactTitle: "Зворотний зв'язок", phoneLabel: "Тел:",
+            footerHoursTitle: "Час роботи",
+            footerHours1: "Пн–Чт: 09:00–18:00", footerHours2: "Пт: 09:00–15:00",
+            footerHours3: "Сб–Нд: Вихідні (черговий адвокат на зв'язку)",
+            footerPrivacy: "Політика конфіденційності",
+            copyright: "Юридичне об'єднання «Харченко та партнери». Усі права захищено."
+        },
+
+        /* ------------------------- РУССКИЙ ------------------------- */
+        ru: {
+            titleTag: "Юридическое объединение «Харченко и партнёры» | Полтава",
+            skipLink: "Перейти к основному содержимому",
+            topHours: "Пн-Чт: 09:00–18:00 | Пт: 09:00–15:00 | Сб-Вс: по договорённости",
+            hotline: "Горячая линия защиты:",
+            navHome: "Главная", navAbout: "О компании", navTeam: "Команда",
+            navNews: "Новости", navCases: "Дела", navPractices: "Практики", navContacts: "Контакты",
+            eyebrow: "Адвокатура в Полтаве с 2003 года",
+            heroTitle: "Ваш надёжный <br><span class=\"highlight\">правовой щит</span> в Полтаве",
+            heroSubtitle: "Профессиональные адвокаты юридического объединения «Харченко и партнёры» обеспечат безупречную защиту интересов вашего бизнеса в спорах с налоговой и окажут помощь частным лицам.",
+            btnConsult: "Заказать консультацию", btnMore: "Узнать больше",
+            badgeYears: "20+ лет", badgeText: "адвокатской практики",
+            tab1Title: "Хозяйственные суды",
+            tab1Text: "Представительство интересов предприятий Полтавы и области в судах. Взыскание задолженности, банкротство, корпоративные споры.",
+            tab2Title: "Налоговые споры",
+            tab2Text: "Обжалование НУР, разблокировка налоговых накладных, сопровождение налоговых проверок и оптимизация бизнеса.",
+            tab3Title: "Семейное право",
+            tab3Text: "Гражданские дела, расторжение брака, раздел имущества супругов, алиментные споры и урегулирование имущественных правоотношений.",
+            tab4Title: "Уголовная защита",
+            tab4Text: "Защита подозреваемых и обвиняемых на всех этапах досудебного расследования и непосредственно в судебном процессе.",
+            stat1: "Лет опыта", stat2: "Выигранных дел", stat3: "Успешных решений", stat4: "Адвокатов в команде",
+            aboutName: "Александр Васильевич Харченко",
+            aboutRole: "Управляющий партнёр юридического объединения «Харченко и партнёры»",
+            metaAddress: "36014, г. Полтава, пер. Романа Шухевича, 4, каб. 11",
+            metaCert: "Свидетельство № 376 от 26.11.2003",
+            aboutP1: "Приветствую вас на официальном ресурсе юридического объединения «Харченко и партнёры». Наша компания была основана в самом сердце Полтавы с целью предоставления высокопрофессиональной юридической помощи как крупному локальному бизнесу, так и частным лицам.",
+            aboutP2: "Мы не просто консультируем — мы берём на себя полную ответственность за конечный результат вашего дела. Благодаря команде профильных экспертов мы обеспечиваем комплексное ведение судебных споров любой сложности, опираясь на многолетнюю успешную практику в судах Полтавской области и Верховного Суда Украины.",
+            aboutP3: "Сегодня особым вектором развития нашего объединения является корпоративная защита предприятий Полтавы. Мы успешно сопровождаем хозяйственные процессы, минимизируем давление со стороны контролирующих органов и оказываем надёжную поддержку при налоговых проверках и обжаловании решений ГНС.",
+            aboutP4: "Доверие наших клиентов — главный капитал объединения. Обратившись к нам, вы получаете глубокий правовой анализ, прозрачные условия сотрудничества и гарантию конфиденциальности ваших персональных и коммерческих данных.",
+            teamTitle: "Наша команда",
+            teamSubtitle: "Опытные адвокаты и юристы, ежедневно защищающие интересы клиентов в судах Полтавщины.",
+            teamYears: "лет опыта",
+            newsTitle: "Новости и практика Верховного Суда",
+            newsSubtitle: "Свежие правовые позиции Верховного Суда Украины и новости объединения.",
+            newsRead: "Читать решение",
+            casesTitle: "Выигранные дела",
+            casesSubtitle: "Реальные результаты нашей работы в судах. Детали дел обезличены из соображений адвокатской тайны.",
+            caseResultLabel: "Результат",
+            heritageTitle: "Глубокие правовые традиции Полтавщины",
+            heritageSubtitle: "Наша деятельность тесно переплетена с историей, государственными институтами и развитием делового сообщества Полтавы.",
+            her1Title: "Академическая база",
+            her1Text: "Наши адвокаты — выпускники ведущих юридических вузов страны, включая авторитетные правовые кафедры Полтавщины.",
+            her2Title: "Судебная защита",
+            her2Text: "Ежедневное участие и доказанный успех в гражданских, апелляционных и хозяйственных судах Полтавы и всей Полтавской области.",
+            her3Title: "Деловой и исторический центр",
+            her3Text: "Главный офис объединения находится в центре города, в пешей доступности от ключевых административных и судебных учреждений.",
+            practicesTitle: "Нужна защита бизнеса в судах Полтавы?",
+            practicesText: "Объединение <strong>«Харченко и партнёры»</strong> специализируется на защите компаний Полтавской области в спорах с налоговой, хозяйственных правоотношениях и сложном семейном праве.",
+            prac1: "Хозяйственные суды и споры", prac2: "Обжалование решений ГНС",
+            prac3: "Налоговое планирование бизнеса", prac4: "Сопровождение компаний Полтавы",
+            prac5: "Бракоразводные процессы", prac6: "Раздел имущества супругов",
+            prac7: "Определение места жительства ребёнка", prac8: "Уголовная защита в суде",
+            prac9: "Корпоративное право и договоры", prac10: "Урегулирование взысканий и долгов",
+            contactTitle: "Отправить запрос",
+            contactSubtitle: "Оставьте контактные данные. Дежурный адвокат объединения свяжется с вами для детального анализа ситуации.",
+            successTitle: "Сообщение успешно отправлено!",
+            successText: "Спасибо за обращение в «Харченко и партнёры». Специалист свяжется с вами в ближайшее время для оказания правовой помощи.",
+            phName: "Ваше имя *",
+            phCompany: "Ваш адрес или название компании (напр., Полтава, ООО «Старт»)",
+            phPhone: "Телефон (+380 XX XXX XX XX) *",
+            phEmail: "E-Mail *",
+            phMessage: "Опишите суть вашего правового вопроса (напр., налоговый спор, представительство в суде и т.п.) *",
+            errName: "Пожалуйста, укажите ваше имя (не менее 2 символов)",
+            errPhone: "Пожалуйста, укажите корректный номер телефона",
+            errEmail: "Пожалуйста, укажите действительный e-mail",
+            errMessage: "Пожалуйста, опишите ваше обращение",
+            consent: "Я даю безусловное согласие на обработку моих персональных данных в соответствии с законодательством Украины о защите информации.",
+            errConsent: "* Согласие обязательно для отправки запроса",
+            submitBtn: "Отправить сейчас", submitting: "Отправка...",
+            footerSubtitle: "Юридическое объединение",
+            footerAbout: "Высокие стандарты правозащитной адвокатуры, сопровождение бизнеса и ориентация на результат в хозяйственных судах Полтавской области.",
+            footerAddressTitle: "Адрес офиса",
+            footerAddress1: "пер. Романа Шухевича, 4, каб. 11",
+            footerAddress2: "36014 г. Полтава, Украина",
+            footerContactTitle: "Обратная связь", phoneLabel: "Тел:",
+            footerHoursTitle: "Время работы",
+            footerHours1: "Пн–Чт: 09:00–18:00", footerHours2: "Пт: 09:00–15:00",
+            footerHours3: "Сб–Вс: выходные (дежурный адвокат на связи)",
+            footerPrivacy: "Политика конфиденциальности",
+            copyright: "Юридическое объединение «Харченко и партнёры». Все права защищены."
+        },
+
+        /* ------------------------ АНГЛИЙСКИЙ ------------------------ */
+        en: {
+            titleTag: "Kharchenko & Partners Law Association | Poltava",
+            skipLink: "Skip to main content",
+            topHours: "Mon–Thu: 09:00–18:00 | Fri: 09:00–15:00 | Sat–Sun: by appointment",
+            hotline: "Legal defence hotline:",
+            navHome: "Home", navAbout: "About", navTeam: "Team",
+            navNews: "News", navCases: "Cases", navPractices: "Practices", navContacts: "Contacts",
+            eyebrow: "Advocacy in Poltava since 2003",
+            heroTitle: "Your reliable <br><span class=\"highlight\">legal shield</span> in Poltava",
+            heroSubtitle: "The professional attorneys of Kharchenko & Partners will flawlessly protect your business in tax disputes and provide legal assistance to individuals.",
+            btnConsult: "Request a consultation", btnMore: "Learn more",
+            badgeYears: "20+ years", badgeText: "of legal practice",
+            tab1Title: "Commercial courts",
+            tab1Text: "Representing companies of the Poltava region in court. Debt recovery, bankruptcy, corporate disputes.",
+            tab2Title: "Tax disputes",
+            tab2Text: "Challenging tax assessments, unblocking tax invoices, support during tax audits and business tax planning.",
+            tab3Title: "Family law",
+            tab3Text: "Civil cases, divorce, division of marital property, alimony disputes and settlement of property relations.",
+            tab4Title: "Criminal defence",
+            tab4Text: "Defence of suspects and accused at every stage of pre-trial investigation and in court.",
+            stat1: "Years of experience", stat2: "Cases won", stat3: "Success rate", stat4: "Attorneys in the team",
+            aboutName: "Oleksandr V. Kharchenko",
+            aboutRole: "Managing partner of Kharchenko & Partners law association",
+            metaAddress: "Office 11, 4 Romana Shukhevycha Lane, Poltava, 36014, Ukraine",
+            metaCert: "Attorney certificate No. 376 dated 26.11.2003",
+            aboutP1: "Welcome to the official website of Kharchenko & Partners. Our firm was founded in the very heart of Poltava to provide highly professional legal assistance both to major local businesses and to individuals.",
+            aboutP2: "We do more than consult — we take full responsibility for the final outcome of your case. With a team of specialised experts, we handle litigation of any complexity, backed by many years of successful practice in the courts of the Poltava region and the Supreme Court of Ukraine.",
+            aboutP3: "Today a key focus of our practice is corporate defence of Poltava businesses. We successfully handle commercial litigation, minimise pressure from regulatory authorities and provide reliable support during tax audits and appeals against tax service decisions.",
+            aboutP4: "Our clients' trust is the firm's greatest asset. By turning to us you receive in-depth legal analysis, transparent terms of cooperation and guaranteed confidentiality of your personal and business data.",
+            teamTitle: "Our team",
+            teamSubtitle: "Experienced attorneys and lawyers protecting our clients' interests in the courts of the Poltava region every day.",
+            teamYears: "years of experience",
+            newsTitle: "News & Supreme Court practice",
+            newsSubtitle: "The latest legal positions of the Supreme Court of Ukraine and firm news.",
+            newsRead: "Read the decision",
+            casesTitle: "Cases we have won",
+            casesSubtitle: "Real results of our courtroom work. Case details are anonymised to protect attorney-client privilege.",
+            caseResultLabel: "Outcome",
+            heritageTitle: "Deep legal traditions of the Poltava region",
+            heritageSubtitle: "Our work is closely interwoven with the history, public institutions and business community of Poltava.",
+            her1Title: "Academic background",
+            her1Text: "Our attorneys graduated from Ukraine's leading law schools, including respected law faculties of the Poltava region.",
+            her2Title: "Litigation defence",
+            her2Text: "Daily court work and a proven record of success in civil, appellate and commercial courts across the Poltava region.",
+            her3Title: "Business and historic centre",
+            her3Text: "Our head office is located in the city centre, within walking distance of the key administrative and judicial institutions.",
+            practicesTitle: "Need to protect your business in the courts of Poltava?",
+            practicesText: "<strong>Kharchenko & Partners</strong> specialises in defending companies of the Poltava region in tax disputes, commercial matters and complex family law.",
+            prac1: "Commercial courts and disputes", prac2: "Appeals against tax authority decisions",
+            prac3: "Business tax planning", prac4: "Ongoing support for Poltava companies",
+            prac5: "Divorce proceedings", prac6: "Division of marital property",
+            prac7: "Child residence disputes", prac8: "Criminal defence in court",
+            prac9: "Corporate law and contracts", prac10: "Debt recovery and settlement",
+            contactTitle: "Send a request",
+            contactSubtitle: "Leave your contact details and the duty attorney will get in touch to analyse your situation in detail.",
+            successTitle: "Your message has been sent!",
+            successText: "Thank you for contacting Kharchenko & Partners. A specialist will get back to you shortly.",
+            phName: "Your name *",
+            phCompany: "Your address or company name (e.g. Poltava, Start LLC)",
+            phPhone: "Phone (+380 XX XXX XX XX) *",
+            phEmail: "E-mail *",
+            phMessage: "Describe your legal issue (e.g. tax dispute, court representation, etc.) *",
+            errName: "Please enter your name (at least 2 characters)",
+            errPhone: "Please enter a valid phone number",
+            errEmail: "Please enter a valid e-mail address",
+            errMessage: "Please describe your request",
+            consent: "I give my unconditional consent to the processing of my personal data in accordance with Ukrainian data protection law.",
+            errConsent: "* Consent is required to send the request",
+            submitBtn: "Send now", submitting: "Sending...",
+            footerSubtitle: "Law association",
+            footerAbout: "High standards of advocacy, business support and a result-oriented approach in the commercial courts of the Poltava region.",
+            footerAddressTitle: "Office address",
+            footerAddress1: "4 Romana Shukhevycha Lane, office 11",
+            footerAddress2: "36014 Poltava, Ukraine",
+            footerContactTitle: "Get in touch", phoneLabel: "Tel:",
+            footerHoursTitle: "Working hours",
+            footerHours1: "Mon–Thu: 09:00–18:00", footerHours2: "Fri: 09:00–15:00",
+            footerHours3: "Sat–Sun: closed (duty attorney available)",
+            footerPrivacy: "Privacy policy",
+            copyright: "Kharchenko & Partners Law Association. All rights reserved."
+        }
+    };
+
+    /* Ключи, значения которых содержат HTML-теги: подставляются через
+       innerHTML (остальные — через textContent, это безопаснее) */
+    const HTML_KEYS = new Set(["heroTitle", "practicesText"]);
+
+    /* Локали для форматирования дат новостей под каждый язык */
+    const LOCALES = { ua: "uk-UA", ru: "ru-RU", en: "en-GB" };
+
+    /* ****************************************************************
+         БЛОК 3. ЛОГИКА САЙТА
+         Объект app собирает всю интерактивность:
+           меню, вкладки, форма, анимации, счётчики,
+           переключение языков и генерация карточек из данных.
+       **************************************************************** */
+    (function() {
+        'use strict';
+
+        const app = {
+            /* ---- ссылки на элементы страницы (заполняются в init) ---- */
+            burgerBtn: null, mainNav: null, overlay: null,
+            scrollBtn: null, header: null, form: null,
+            successBox: null, submitBtn: null,
+            isMenuOpen: false,
+            lang: "ua",          /* текущий язык сайта */
+            fadeObserver: null,  /* наблюдатель анимаций появления */
+
+            /* ============ ТОЧКА ВХОДА: запускается после загрузки DOM ============ */
+            init() {
+                this.cacheDOMElements();
+                /* восстанавливаем язык, выбранный в прошлый визит */
+                const saved = localStorage.getItem("siteLang");
+                if (saved && I18N[saved]) this.lang = saved;
+
+                this.setupScrollAnimations();  /* до render*, чтобы observer существовал */
+                this.setupLangSwitch();
+                this.setLang(this.lang);       /* применяем язык + рисуем карточки */
+                this.setupBurgerMenu();
+                this.setupTabs();
+                this.setupPhoneMask();
+                this.setupFormValidation();
+                this.setupStickyHeader();
+                this.setupScrollTop();
+                this.setupSmoothScroll();
+                this.setupCounters();
+                this.setYear();
+            },
+
+            cacheDOMElements() {
+                this.burgerBtn = document.getElementById("burgerBtn");
+                this.mainNav = document.getElementById("mainNav");
+                this.overlay = document.getElementById("mobileOverlay");
+                this.scrollBtn = document.getElementById("scrollTopBtn");
+                this.header = document.getElementById("header");
+                this.form = document.getElementById("contact-form");
+                this.successBox = document.getElementById("success-box");
+                this.submitBtn = document.getElementById("submitBtn");
+            },
+
+            /* ================================================================
+               МНОГОЯЗЫЧНОСТЬ
+               ================================================================ */
+            /* t("ключ") — строка интерфейса на текущем языке */
+            t(key) {
+                return (I18N[this.lang] && I18N[this.lang][key]) || I18N.ua[key] || key;
+            },
+            /* pick(obj) — выбирает перевод из объекта данных {ua,ru,en};
+               если перевода нет, возвращает украинский вариант */
+            pick(obj) {
+                if (!obj) return "";
+                return obj[this.lang] || obj.ua || "";
+            },
+
+            /* Вешаем клики на кнопки UA / RU / EN */
+            setupLangSwitch() {
+                document.querySelectorAll(".lang-btn").forEach(btn => {
+                    btn.addEventListener("click", () => this.setLang(btn.dataset.lang));
+                });
+            },
+
+            /* Применить язык ко всей странице */
+            setLang(lang) {
+                if (!I18N[lang]) return;
+                this.lang = lang;
+                localStorage.setItem("siteLang", lang);          /* запоминаем выбор */
+                document.documentElement.lang = (lang === "ua" ? "uk" : lang); /* атрибут lang для браузера */
+                document.title = this.t("titleTag");              /* заголовок вкладки */
+
+                /* 1. Все элементы с data-i18n: подставляем перевод.
+                   Ключи из HTML_KEYS содержат теги -> innerHTML,
+                   остальные — textContent (безопаснее). */
+                document.querySelectorAll("[data-i18n]").forEach(el => {
+                    const key = el.dataset.i18n;
+                    if (HTML_KEYS.has(key)) el.innerHTML = this.t(key);
+                    else el.textContent = this.t(key);
+                });
+                /* 2. Подсказки в полях формы (placeholder) */
+                document.querySelectorAll("[data-i18n-ph]").forEach(el => {
+                    el.placeholder = this.t(el.dataset.i18nPh);
+                });
+                /* 3. Подсветка активной кнопки языка */
+                document.querySelectorAll(".lang-btn").forEach(btn => {
+                    btn.classList.toggle("active", btn.dataset.lang === lang);
+                });
+                /* 4. Перерисовываем карточки, зависящие от языка */
+                this.renderTeam();
+                this.renderNews();
+                this.renderCases();
+            },
+
+            /* ================================================================
+               ГЕНЕРАЦИЯ КАРТОЧЕК ИЗ ДАННЫХ (команда / новости / дела)
+               ================================================================ */
+            /* Аватар-заглушка: рисуем SVG-кружок с инициалами юриста
+               (используется, когда фото не задано или файл не найден) */
+            avatarURI(initials) {
+                const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800">' +
+                    '<rect width="600" height="800" fill="#EAE4DE"/>' +
+                    '<circle cx="300" cy="330" r="170" fill="#6A1A1A" opacity="0.9"/>' +
+                    '<text x="300" y="385" font-family="Georgia,serif" font-size="150" fill="#fff" text-anchor="middle">' + initials + '</text>' +
+                    '<rect y="640" width="600" height="160" fill="#6A1A1A" opacity="0.06"/></svg>';
+                return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+            },
+
+            /* Карточки юристов из TEAM_DATA -> #teamGrid */
+            renderTeam() {
+                const grid = document.getElementById("teamGrid");
+                if (!grid) return;
+                grid.innerHTML = TEAM_DATA.map((m, i) => {
+                    /* если фото задано — пробуем файл, при ошибке заменим аватаром */
+                    const photo = m.photo
+                        ? '<img class="team-photo" src="' + m.photo + '" alt="' + this.pick(m.name) + '" loading="lazy" onerror="this.onerror=null;this.src=app.avatarURI(\'' + m.initials + '\');">'
+                        : '<img class="team-photo" src="' + this.avatarURI(m.initials) + '" alt="' + this.pick(m.name) + '">';
+                    return '<article class="team-card fade-in-up delay-' + Math.min(i, 4) + '">' +
+                        photo +
+                        '<div class="team-info">' +
+                            '<h3 class="team-name">' + this.pick(m.name) + '</h3>' +
+                            '<div class="team-role">' + this.pick(m.role) + '</div>' +
+                            '<p class="team-exp">' + this.pick(m.exp) + '</p>' +
+                            '<span class="team-years"><i class="fas fa-briefcase" aria-hidden="true"></i> ' + m.years + ' ' + this.t("teamYears") + '</span>' +
+                        '</div></article>';
+                }).join("");
+                this.observeNew(grid); /* подключаем анимацию появления */
+            },
+
+            /* Карточки новостей из NEWS_DATA -> #newsList */
+            renderNews() {
+                const list = document.getElementById("newsList");
+                if (!list) return;
+                list.innerHTML = NEWS_DATA.map((n, i) => {
+                    /* дата в формате выбранного языка, напр. «18 июня 2026 г.» */
+                    const dateStr = new Date(n.date).toLocaleDateString(LOCALES[this.lang], { day: "numeric", month: "long", year: "numeric" });
+                    /* ссылка «Читать решение» — только если link заполнен */
+                    const link = n.link
+                        ? '<a class="news-link" href="' + n.link + '" target="_blank" rel="noopener">' + this.t("newsRead") + ' <i class="fas fa-arrow-right" aria-hidden="true"></i></a>'
+                        : "";
+                    return '<article class="news-card fade-in-up delay-' + Math.min(i, 4) + '">' +
+                        '<div class="news-meta">' +
+                            '<span class="news-date"><i class="far fa-calendar" aria-hidden="true"></i> ' + dateStr + '</span>' +
+                            '<span class="news-tag">' + this.pick(n.tag) + '</span>' +
+                        '</div>' +
+                        '<h3>' + this.pick(n.title) + '</h3>' +
+                        '<p>' + this.pick(n.text) + '</p>' + link +
+                    '</article>';
+                }).join("");
+                this.observeNew(list);
+            },
+
+            /* Карточки выигранных дел из CASES_DATA -> #casesGrid */
+            renderCases() {
+                const grid = document.getElementById("casesGrid");
+                if (!grid) return;
+                grid.innerHTML = CASES_DATA.map((c, i) =>
+                    '<article class="case-card fade-in-up delay-' + Math.min(i, 4) + '">' +
+                        '<div class="case-top">' +
+                            '<span class="case-tag">' + this.pick(c.tag) + '</span>' +
+                            '<span class="case-year">' + c.year + '</span>' +
+                        '</div>' +
+                        '<div class="case-court"><i class="fas fa-landmark" aria-hidden="true"></i> ' + this.pick(c.court) + '</div>' +
+                        '<h3>' + this.pick(c.title) + '</h3>' +
+                        '<p class="case-desc">' + this.pick(c.desc) + '</p>' +
+                        '<div class="case-result"><strong>' + this.t("caseResultLabel") + '</strong>' + this.pick(c.result) + '</div>' +
+                    '</article>'
+                ).join("");
+                this.observeNew(grid);
+            },
+
+            /* ================================================================
+               ЗАПАСНЫЕ ИЗОБРАЖЕНИЯ
+               Порядок: локальный файл -> data-fallback (интернет) ->
+               фирменная SVG-заглушка с эмблемой весов.
+               ================================================================ */
+            imgError(img) {
+                if (img.dataset.fallback && !img.dataset.triedFallback) {
+                    img.dataset.triedFallback = "1";
+                    img.src = img.dataset.fallback;   /* пробуем запасной адрес */
+                    return;
+                }
+                img.onerror = null;                    /* защита от зацикливания */
+                const svg =
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="750" viewBox="0 0 600 750">' +
+                    '<rect width="600" height="750" fill="#efe9e6"/>' +
+                    '<g fill="none" stroke="#6A1A1A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity="0.7" transform="translate(236,300) scale(2)">' +
+                    '<path d="M32 7 l4 5 -4 5 -4 -5 z" fill="#6A1A1A" stroke="none"/>' +
+                    '<line x1="32" y1="17" x2="32" y2="50"/><line x1="12" y1="21" x2="52" y2="21"/>' +
+                    '<line x1="12" y1="21" x2="7" y2="31"/><line x1="12" y1="21" x2="17" y2="31"/><path d="M6 31 Q12 41 18 31"/>' +
+                    '<line x1="52" y1="21" x2="47" y2="31"/><line x1="52" y1="21" x2="57" y2="31"/><path d="M46 31 Q52 41 58 31"/>' +
+                    '<path d="M25 52 Q32 46 39 52"/><line x1="23" y1="53" x2="41" y2="53"/></g>' +
+                    '<text x="300" y="470" font-family="Georgia, serif" font-size="26" fill="#6A1A1A" text-anchor="middle">Харченко та партнери</text>' +
+                    '</svg>';
+                img.src = "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+            },
+
+            /* ================================================================
+               МОБИЛЬНОЕ МЕНЮ («бургер»)
+               Открытие/закрытие панели, блокировка прокрутки страницы,
+               закрытие по клику на затемнение, пункт меню или Escape.
+               ================================================================ */
+            setupBurgerMenu() {
+                if (!this.burgerBtn) return;
+                const toggle = () => {
+                    this.isMenuOpen = !this.isMenuOpen;
+                    this.burgerBtn.classList.toggle("active", this.isMenuOpen);
+                    this.mainNav.classList.toggle("open", this.isMenuOpen);
+                    this.overlay.classList.toggle("active", this.isMenuOpen);
+                    this.burgerBtn.setAttribute("aria-expanded", String(this.isMenuOpen));
+                    document.body.style.overflow = this.isMenuOpen ? "hidden" : "";
+                };
+                this.burgerBtn.addEventListener("click", toggle);
+                this.overlay.addEventListener("click", toggle);
+                this.mainNav.querySelectorAll("a").forEach(link => {
+                    link.addEventListener("click", () => { if (this.isMenuOpen) toggle(); });
+                });
+                document.addEventListener("keydown", (e) => {
+                    if (e.key === "Escape" && this.isMenuOpen) toggle();
+                });
+            },
+
+            /* ================================================================
+               ВКЛАДКИ УСЛУГ (01-04 на главном экране)
+               ================================================================ */
+            setupTabs() {
+                document.querySelectorAll(".tab-trigger").forEach(btn => {
+                    btn.addEventListener("click", () => this.switchTab(btn.dataset.tab));
+                });
+            },
+            switchTab(tabId) {
+                /* прячем все панели и сбрасываем кнопки */
+                document.querySelectorAll(".tab-pane").forEach(pane => {
+                    pane.classList.remove("active");
+                    pane.style.display = "none";
+                });
+                document.querySelectorAll(".tab-trigger").forEach(btn => {
+                    const isActive = btn.dataset.tab === tabId;
+                    btn.classList.toggle("active", isActive);
+                    btn.setAttribute("aria-selected", String(isActive));
+                });
+                /* показываем нужную панель с анимацией */
+                const targetPane = document.getElementById("tab-" + tabId);
+                if (targetPane) {
+                    targetPane.style.display = "flex";
+                    void targetPane.offsetWidth; /* принудительный reflow — гарантирует анимацию */
+                    targetPane.classList.add("active");
+                }
+            },
+
+            /* ================================================================
+               МАСКА ТЕЛЕФОНА: приводит ввод к виду +380 XX XXX XX XX
+               ================================================================ */
+            setupPhoneMask() {
+                const phoneInput = document.getElementById("f-phone");
+                if (!phoneInput) return;
+                phoneInput.addEventListener("input", function(e) {
+                    let val = e.target.value.replace(/\D/g, "");          /* только цифры */
+                    if (val.length > 0 && !val.startsWith("380")) val = "380" + val;
+                    if (val.length > 12) val = val.slice(0, 12);          /* не более 12 цифр */
+                    const match = val.match(/(\d{0,3})(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})/);
+                    if (match) {
+                        let formatted = "+" + match[1];
+                        if (match[2]) formatted += " " + match[2];
+                        if (match[3]) formatted += " " + match[3];
+                        if (match[4]) formatted += " " + match[4];
+                        if (match[5]) formatted += " " + match[5];
+                        e.target.value = formatted.trim();
+                    }
+                });
+            },
+
+            /* ================================================================
+               ПРОВЕРКА ФОРМЫ ПЕРЕД ОТПРАВКОЙ
+               Каждое поле проверяется при потере фокуса и при отправке.
+               При ошибке поле подсвечивается и показывается подсказка.
+               ================================================================ */
+            setupFormValidation() {
+                if (!this.form) return;
+                const fields = {
+                    name: document.getElementById("f-name"),
+                    email: document.getElementById("f-email"),
+                    phone: document.getElementById("f-phone"),
+                    message: document.getElementById("f-message"),
+                    consent: document.getElementById("f-consent")
+                };
+                const errorIds = { name: "name-error", email: "email-error", phone: "phone-error", message: "message-error", consent: "consent-error" };
+                const showError = (field, id) => {
+                    field.classList.add("error");
+                    const el = document.getElementById(id);
+                    if (el) el.style.opacity = "1";
+                };
+                const hideError = (field, id) => {
+                    field.classList.remove("error");
+                    const el = document.getElementById(id);
+                    if (el) el.style.opacity = "0";
+                };
+                /* правила: имя >= 2 символов, e-mail по шаблону,
+                   телефон = 12 цифр, сообщение > 10 символов */
+                const validators = {
+                    name: v => v.trim().length >= 2,
+                    email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+                    phone: v => v.replace(/\D/g, "").length >= 12,
+                    message: v => v.trim().length > 10
+                };
+                /* живая проверка при уходе из поля и вводе */
+                Object.keys(validators).forEach(key => {
+                    const field = fields[key], id = errorIds[key], test = validators[key];
+                    field.addEventListener("blur", () => { test(field.value) ? hideError(field, id) : showError(field, id); });
+                    field.addEventListener("input", () => {
+                        if (field.classList.contains("error") && test(field.value)) hideError(field, id);
+                    });
+                });
+                fields.consent.addEventListener("change", () => {
+                    document.getElementById(errorIds.consent).classList.toggle("visible", !fields.consent.checked);
+                });
+                /* обработка отправки */
+                this.form.addEventListener("submit", (e) => {
+                    e.preventDefault(); /* демо-режим: без реальной отправки на сервер */
+                    let isValid = true;
+                    Object.keys(validators).forEach(key => {
+                        if (!validators[key](fields[key].value)) { showError(fields[key], errorIds[key]); isValid = false; }
+                        else hideError(fields[key], errorIds[key]);
+                    });
+                    if (!fields.consent.checked) {
+                        document.getElementById(errorIds.consent).classList.add("visible");
+                        isValid = false;
+                    } else {
+                        document.getElementById(errorIds.consent).classList.remove("visible");
+                    }
+                    if (!isValid) { /* прокручиваем к первой ошибке */
+                        const firstError = this.form.querySelector(".form-control.error");
+                        if (firstError) { firstError.focus(); firstError.scrollIntoView({ behavior: "smooth", block: "center" }); }
+                        return;
+                    }
+                    /* имитация отправки: показываем спиннер, затем зелёное сообщение */
+                    this.submitBtn.disabled = true;
+                    this.submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> ' + this.t("submitting");
+                    setTimeout(() => {
+                        this.form.reset();
+                        this.form.style.display = "none";
+                        this.successBox.style.display = "block";
+                        this.successBox.scrollIntoView({ behavior: "smooth", block: "center" });
+                        this.submitBtn.disabled = false;
+                        this.submitBtn.innerHTML = '<i class="fas fa-paper-plane" aria-hidden="true"></i> <span data-i18n="submitBtn">' + this.t("submitBtn") + '</span>';
+                    }, 1500);
+                });
+            },
+
+            /* ================================================================
+               АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ ПРОКРУТКЕ (IntersectionObserver)
+               Следит за элементами .fade-in-up и добавляет .visible,
+               когда они попадают в зону видимости.
+               ================================================================ */
+            setupScrollAnimations() {
+                if (!("IntersectionObserver" in window)) { /* старый браузер — показываем всё сразу */
+                    document.querySelectorAll(".fade-in-up").forEach(el => el.classList.add("visible"));
+                    return;
+                }
+                this.fadeObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("visible");
+                            this.fadeObserver.unobserve(entry.target); /* анимируем один раз */
+                        }
+                    });
+                }, { root: null, rootMargin: "0px 0px -40px 0px", threshold: 0.1 });
+                document.querySelectorAll(".fade-in-up").forEach(el => this.fadeObserver.observe(el));
+            },
+            /* Подключить анимацию к карточкам, созданным скриптом позже */
+            observeNew(root) {
+                if (!this.fadeObserver) { /* наблюдателя нет — просто показываем */
+                    root.querySelectorAll(".fade-in-up").forEach(el => el.classList.add("visible"));
+                    return;
+                }
+                root.querySelectorAll(".fade-in-up:not(.visible)").forEach(el => this.fadeObserver.observe(el));
+            },
+
+            /* Тень у шапки после прокрутки страницы */
+            setupStickyHeader() {
+                if (!this.header) return;
+                window.addEventListener("scroll", () => {
+                    this.header.classList.toggle("scrolled", window.scrollY > 30);
+                }, { passive: true });
+            },
+
+            /* Кнопка «наверх»: появляется после 600px прокрутки */
+            setupScrollTop() {
+                if (!this.scrollBtn) return;
+                window.addEventListener("scroll", () => {
+                    this.scrollBtn.classList.toggle("visible", window.scrollY > 600);
+                }, { passive: true });
+                this.scrollBtn.addEventListener("click", () => {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                });
+            },
+
+            /* Плавная прокрутка к якорям с поправкой на высоту шапки */
+            setupSmoothScroll() {
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener("click", (e) => {
+                        const targetId = anchor.getAttribute("href");
+                        if (targetId === "#") return; /* ссылка «наверх» — работает нативно */
+                        const target = document.querySelector(targetId);
+                        if (target) {
+                            e.preventDefault();
+                            const headerHeight = this.header ? this.header.offsetHeight : 0;
+                            const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+                            window.scrollTo({ top, behavior: "smooth" });
+                        }
+                    });
+                });
+            },
+
+            /* ================================================================
+               АНИМИРОВАННЫЕ СЧЁТЧИКИ СТАТИСТИКИ (22, 320+, 98%, 12)
+               Числа «набегают» от 0, когда полоса попадает на экран.
+               ================================================================ */
+            setupCounters() {
+                const counters = document.querySelectorAll(".stat-number[data-count]");
+                if (!counters.length) return;
+                if (!("IntersectionObserver" in window)) { /* без анимации в старых браузерах */
+                    counters.forEach(el => { el.textContent = el.getAttribute("data-count") + (el.dataset.suffix || ""); });
+                    return;
+                }
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const el = entry.target;
+                            const target = parseInt(el.getAttribute("data-count"), 10);
+                            const suffix = el.dataset.suffix || "";
+                            let current = 0;
+                            const duration = 2000;                              /* 2 секунды на анимацию */
+                            const step = Math.max(1, Math.floor(target / 60));  /* ~60 шагов */
+                            const interval = duration / (target / step);
+                            const timer = setInterval(() => {
+                                current += step;
+                                if (current >= target) {
+                                    el.textContent = target + suffix;
+                                    clearInterval(timer);
+                                } else el.textContent = current;
+                            }, interval);
+                            observer.unobserve(el);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                counters.forEach(el => observer.observe(el));
+            },
+
+            /* Актуальный год в копирайте подвала */
+            setYear() {
+                const y = document.getElementById("year");
+                if (y) y.textContent = new Date().getFullYear();
+            }
+        };
+
+        /* app доступен глобально (нужен для onerror у картинок) */
+        window.app = app;
+        document.addEventListener("DOMContentLoaded", () => app.init());
+    })();
+    </script>
+</body>
+</html>
