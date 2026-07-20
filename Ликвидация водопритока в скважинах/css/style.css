@@ -1,0 +1,1103 @@
+/* ═════════════════════════════════════════════════════════════════════
+   ФАЙЛ СТИЛЕЙ САЙТА (style.css)
+
+   Этот файл отвечает за ВНЕШНИЙ ВИД: цвета, шрифты, отступы, размеры,
+   тени, скругления углов и поведение на разных экранах. Само
+   содержимое (тексты, картинки) лежит в HTML-файлах страниц.
+
+   Как это читать: каждая запись выглядит так —
+       .имя-блока { свойство: значение; }
+   Например: .card { padding: 34px; } означает «у карточки внутренние
+   отступы 34 пикселя». Текст между /* и *／ — пояснения для людей,
+   браузер их пропускает.
+   ═════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════ ПАЛИТРА И ОБЩИЕ НАСТРОЙКИ ═══════════
+   Здесь один раз заданы все фирменные цвета и шрифты сайта.
+   Дальше по файлу они используются по имени: var(--accent) и т.п.
+   Хотите перекрасить сайт — меняйте значения именно здесь. */
+:root {
+  --navy-900: #081420;
+  --navy-800: #0b1d2e;
+  --navy-700: #10283d;
+  --ink: #14212e;
+  --muted: #5b6b7a;
+  --line: #e3e9ef;
+  --bg: #ffffff;
+  --bg-tint: #f4f7fa;
+  --accent: #0e9f8a;
+  --accent-2: #17c3a8;
+  --amber: #f5a623;
+  --radius: 18px;
+  --shadow: 0 10px 40px rgba(8, 20, 32, 0.08);
+  --font-display: "Manrope", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip; /* защита от случайного горизонтального скролла на мобильных */
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ═══════════ ШАПКА САЙТА ═══════════
+   Тёмная полоса вверху с логотипом, меню и переключателем языков.
+   Она «прилипает» к верху экрана и слегка размывает то, что
+   прокручивается под ней (эффект матового стекла). */
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  background: rgba(8, 20, 32, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.3s;
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 68px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+.logo__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+
+.nav a {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav a:hover { color: #fff; }
+
+.nav__cta {
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.header__right { display: flex; align-items: center; gap: 16px; }
+
+.lang {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lang__btn {
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font: 600 0.78rem var(--font-body);
+  padding: 5px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang__btn.is-active {
+  background: #fff;
+  color: var(--navy-900);
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.burger span {
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
+/* ═══════════ ПЕРВЫЙ ЭКРАН ГЛАВНОЙ СТРАНИЦЫ ═══════════
+   Большой тёмный блок с фотографией нефтяных качалок на фоне,
+   крупным заголовком, кнопками и светящимися пятнами-«бликами».
+   Поверх фото лежит тёмная полупрозрачная плёнка, чтобы белый
+   текст оставался читаемым. */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1000px 500px at 80% -10%, rgba(23, 195, 168, 0.16), transparent 60%),
+    linear-gradient(180deg, rgba(8, 20, 32, 0.82) 0%, rgba(11, 29, 46, 0.9) 100%),
+    url("../assets/img/home-hero.jpg") center 65% / cover no-repeat var(--navy-900);
+  color: #fff;
+  padding: 170px 0 90px;
+}
+
+.hero__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.hero__glow--1 {
+  width: 480px; height: 480px;
+  background: var(--accent);
+  top: -180px; right: -120px;
+}
+
+.hero__glow--2 {
+  width: 380px; height: 380px;
+  background: #1a4a7a;
+  bottom: -160px; left: -120px;
+}
+
+.hero__inner { position: relative; }
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 28px;
+}
+
+.pulse-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 0 0 rgba(23, 195, 168, 0.6);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  70% { box-shadow: 0 0 0 9px rgba(23, 195, 168, 0); }
+}
+
+.hero__title {
+  font-size: clamp(2.2rem, 5vw, 3.7rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  max-width: 850px;
+  margin-bottom: 22px;
+}
+
+.hero__subtitle {
+  font-size: 1.13rem;
+  color: rgba(255, 255, 255, 0.68);
+  max-width: 640px;
+  margin-bottom: 36px;
+}
+
+.hero__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 72px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 30px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  box-shadow: 0 8px 26px rgba(14, 159, 138, 0.35);
+}
+
+.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(14, 159, 138, 0.45); }
+
+.btn--ghost {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.btn--ghost:hover { background: rgba(255, 255, 255, 0.08); }
+
+/* Счётчики достижений (250+, 100+, 45, 75%) в нижней части
+   первого экрана. Цифры с градиентной заливкой. */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.stat__value {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff, var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat__label { color: rgba(255, 255, 255, 0.6); font-size: 0.88rem; margin-top: 6px; }
+
+/* ═══════════ СЕКЦИИ (крупные смысловые блоки страниц) ═══════════
+   .section — обычная светлая секция;
+   .section--tint — слегка сероватая (для чередования фона);
+   .section--dark — тёмная с бирюзовым свечением. */
+.section { padding: 100px 0; }
+
+.section--tint { background: var(--bg-tint); }
+
+.section--dark {
+  background:
+    radial-gradient(800px 400px at 15% 0%, rgba(23, 195, 168, 0.1), transparent 60%),
+    var(--navy-900);
+  color: #fff;
+}
+
+.section--dark .section__title { color: #fff; }
+.section--dark .section__lead { color: rgba(255, 255, 255, 0.65); }
+
+.section__head { max-width: 720px; margin-bottom: 56px; }
+
+.section__tag {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(14, 159, 138, 0.1);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.section__tag--light { background: rgba(23, 195, 168, 0.15); color: var(--accent-2); }
+
+.section__title {
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+}
+
+.section__lead { color: var(--muted); font-size: 1.08rem; }
+
+/* Карточки направлений (на главной): фото сверху, заголовок,
+   описание. При наведении мыши карточка приподнимается. */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 34px;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+
+.card__icon {
+  width: 52px; height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+
+.card__icon--blue  { background: #e7f0fb; }
+.card__icon--amber { background: #fdf1dc; }
+.card__icon--teal  { background: #ddf5f0; }
+.card__icon--green { background: #e6f6e8; }
+
+.card h3 { font-size: 1.22rem; margin-bottom: 12px; }
+.card p { color: var(--muted); font-size: 0.96rem; }
+
+/* Двухколоночная раскладка «текст слева — панель/картинка справа».
+   На узких экранах колонки складываются одна под другую. */
+.split {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.checklist { list-style: none; margin-top: 28px; display: grid; gap: 13px; }
+
+.checklist li {
+  position: relative;
+  padding-left: 34px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.section:not(.section--dark) .checklist li { color: var(--ink); }
+
+.checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 0; top: 1px;
+  width: 22px; height: 22px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
+  padding: 34px;
+  backdrop-filter: blur(8px);
+}
+
+.section--tint .panel-card {
+  background: #fff;
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+}
+
+.panel-card h4 { font-size: 1.15rem; margin-bottom: 16px; }
+
+.doclist { list-style: none; display: grid; gap: 12px; }
+
+.doclist li {
+  padding: 13px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.93rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Карточки услуг с большими номерами 01–06 на странице «Услуги». */
+.offers {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.offer {
+  position: relative;
+  background: var(--bg-tint);
+  border-radius: var(--radius);
+  padding: 36px;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.offer:hover { transform: translateY(-5px); box-shadow: var(--shadow); background: #fff; }
+
+.offer__num {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  color: rgba(14, 159, 138, 0.16);
+  line-height: 1;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.offer h3 { font-size: 1.2rem; margin-bottom: 12px; }
+.offer p { color: var(--muted); font-size: 0.95rem; }
+
+/* Перечень лабораторного оборудования — сетка узких плашек
+   с колбочкой слева (страница «О компании»). */
+.labgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+  gap: 14px;
+  margin-bottom: 48px;
+}
+
+.labitem {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  font-size: 0.94rem;
+  position: relative;
+  padding-left: 46px;
+}
+
+.labitem::before {
+  content: "⚗";
+  position: absolute;
+  left: 18px;
+  color: var(--accent);
+}
+
+.rnd {
+  background: linear-gradient(135deg, rgba(14, 159, 138, 0.07), rgba(23, 195, 168, 0.05));
+  border: 1px solid rgba(14, 159, 138, 0.2);
+  border-radius: var(--radius);
+  padding: 36px;
+}
+
+.rnd h3 { font-size: 1.25rem; margin-bottom: 12px; }
+.rnd p { color: var(--muted); }
+
+/* Блок новостей (тёмный, с оранжевой пометкой даты) и три
+   мини-плашки с цифрами результатов. */
+.news { max-width: 850px; }
+
+.news__badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  background: rgba(245, 166, 35, 0.12);
+  border: 1px solid rgba(245, 166, 35, 0.3);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+}
+
+.news h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 18px; }
+.news > p { color: rgba(255, 255, 255, 0.68); margin-bottom: 36px; }
+
+.news__stats { display: flex; flex-wrap: wrap; gap: 20px; }
+
+.news__stats div {
+  flex: 1;
+  min-width: 180px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+
+.news__stats strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--accent-2);
+}
+
+.news__stats span { color: rgba(255, 255, 255, 0.6); font-size: 0.88rem; }
+
+/* Отзывы клиентов: три карточки с большой декоративной кавычкой. */
+.quotes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.quote {
+  background: var(--bg-tint);
+  border-radius: var(--radius);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: relative;
+}
+
+.quote::before {
+  content: "“";
+  font-family: var(--font-display);
+  font-size: 4rem;
+  line-height: 0.5;
+  color: var(--accent);
+  opacity: 0.35;
+  display: block;
+  height: 24px;
+}
+
+.quote p { color: var(--ink); font-size: 0.95rem; flex: 1; }
+
+.quote footer strong { display: block; font-size: 0.95rem; }
+.quote footer span { color: var(--muted); font-size: 0.84rem; }
+
+/* Карточка руководителя с круглым «аватаром»-инициалами. */
+.panel-card--person { text-align: center; }
+
+.avatar {
+  width: 84px; height: 84px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font: 800 1.6rem var(--font-display);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-card__role {
+  display: block;
+  color: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 4px 0 16px;
+}
+
+.panel-card--person p { color: var(--muted); font-size: 0.92rem; }
+
+/* Страница «Контакты»: сетка тёмных карточек с телефоном,
+   факсом, адресом и списком документов. */
+.contact {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.contact__item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.97rem;
+}
+
+.contact__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.contact__item a:hover { color: var(--accent-2); }
+
+.contact__docs { display: flex; flex-direction: column; gap: 8px; }
+
+.contact__docs a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+  font-size: 0.9rem;
+}
+
+.contact__docs a:hover { color: var(--accent-2); }
+
+/* ═══════════ ПОДВАЛ САЙТА ═══════════
+   Самый нижний тёмный блок: логотип, девиз, ссылки, копирайт. */
+.footer {
+  background: #050d16;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 56px 0 40px;
+}
+
+.footer__inner { display: grid; gap: 18px; }
+
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font: 800 1.2rem var(--font-display);
+}
+
+.footer__tagline { max-width: 460px; font-size: 0.92rem; }
+
+.footer__links { display: flex; flex-wrap: wrap; gap: 22px; font-size: 0.9rem; }
+
+.footer__links a:hover { color: #fff; }
+
+.footer__copy {
+  font-size: 0.82rem;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ═══════════ АНИМАЦИЯ ПОЯВЛЕНИЯ БЛОКОВ ═══════════
+   Блоки с классом .reveal сначала прозрачны и смещены вниз,
+   а при попадании в поле зрения плавно «всплывают» (класс
+   .is-visible им ставит скрипт). Если посетитель отключил
+   анимации в настройках системы — блоки видны сразу. */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ═══════════ АДАПТАЦИЯ ПОД ПЛАНШЕТЫ ═══════════
+   Правила ниже включаются только на экранах уже 960 пикселей:
+   меню прячется за кнопку-«бургер», сетки становятся двухколоночными. */
+@media (max-width: 960px) {
+  .cards, .offers, .quotes, .contact { grid-template-columns: 1fr 1fr; }
+  .split { grid-template-columns: 1fr; gap: 36px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 28px; }
+
+  .nav {
+    position: fixed;
+    top: 68px;
+    left: 0; right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    background: var(--navy-900);
+    padding: 18px 24px 26px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(-130%);
+    transition: transform 0.3s ease;
+  }
+
+  .nav.is-open { transform: none; }
+
+  .nav a { padding: 10px 0; font-size: 1.05rem; width: 100%; }
+  .nav__cta { text-align: center; justify-content: center; display: inline-flex; padding: 12px 18px; }
+
+  .burger { display: flex; }
+}
+
+@media (max-width: 620px) {
+  .cards, .offers, .quotes, .contact { grid-template-columns: 1fr; }
+  .section { padding: 70px 0; }
+  .hero { padding: 130px 0 60px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+}
+
+/* ═══════════ ЭЛЕМЕНТЫ ВНУТРЕННИХ СТРАНИЦ ═══════════ */
+
+/* Подчёркивание активного пункта меню (страницы, на которой
+   посетитель находится сейчас). */
+.nav a.active { color: #fff; }
+.nav a.active:not(.nav__cta) {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-2);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+}
+
+/* Первый экран внутренних страниц — компактнее, чем на главной. */
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(900px 420px at 85% -10%, rgba(23, 195, 168, 0.15), transparent 60%),
+    linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%);
+  color: #fff;
+  padding: 150px 0 70px;
+}
+
+/* Фоновые фото шапок внутренних страниц (поверх — тёмная подложка для читаемости) */
+.page-hero--photo {
+  background:
+    radial-gradient(900px 420px at 85% -10%, rgba(23, 195, 168, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(8, 20, 32, 0.84) 0%, rgba(11, 29, 46, 0.9) 100%),
+    var(--hero-photo) center / cover no-repeat var(--navy-900);
+}
+
+.page-hero--technology { --hero-photo: url("../assets/img/technology.jpg"); }
+.page-hero--offers     { --hero-photo: url("../assets/img/offers.jpg"); }
+.page-hero--library    { --hero-photo: url("../assets/img/library.jpg"); }
+.page-hero--clients    { --hero-photo: url("../assets/img/clients.jpg"); }
+.page-hero--quality    { --hero-photo: url("../assets/img/quality.jpg"); }
+.page-hero--about      { --hero-photo: url("../assets/img/about.jpg"); }
+.page-hero--contact    { --hero-photo: url("../assets/img/contact.jpg"); }
+
+.page-hero__title {
+  font-size: clamp(2rem, 4.5vw, 3.1rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 18px 0 16px;
+}
+
+.page-hero__lead {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.68);
+  max-width: 760px;
+}
+
+/* Split top alignment for text+figure blocks */
+.split--top { align-items: flex-start; }
+
+.tech-p { color: var(--muted); margin-bottom: 18px; font-size: 1.02rem; }
+.tech-p strong { color: var(--ink); }
+
+/* Рамки для анимаций со страницы «Технологии». Сами анимации —
+   отдельные файлы в assets/anim, они вставлены «окошками» (iframe)
+   и масштабируются скриптом под ширину экрана. */
+.anim { margin: 0; }
+
+.anim__frame {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  aspect-ratio: 640 / 400;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+
+.anim__frame iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 640px;
+  height: 400px;
+  border: 0;
+  transform-origin: top left; /* масштабируется скриптом под ширину блока */
+}
+
+.anim figcaption {
+  margin-top: 14px;
+  font-size: 0.88rem;
+  color: var(--muted);
+  max-width: 640px;
+}
+
+/* Light panel variant for light sections */
+.panel-card--light {
+  background: #fff;
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+  backdrop-filter: none;
+}
+
+.doclist--light li {
+  background: var(--bg-tint);
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+.doclist--light a { text-decoration: underline; text-decoration-color: rgba(14,159,138,.4); }
+.doclist--light a:hover { color: var(--accent); }
+
+/* Numbered steps (offers) */
+.steps {
+  margin: 6px 0 0 0;
+  padding-left: 22px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  display: grid;
+  gap: 8px;
+}
+
+.steps li::marker { color: var(--accent); font-weight: 700; }
+
+/* Card photos */
+.card__photo {
+  display: block;
+  width: calc(100% + 68px);
+  margin: -34px -34px 22px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.card__photo--top { object-position: center 22%; }
+
+/* Photo block (about page and others) */
+.photo-block {
+  width: 100%;
+  max-height: 380px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-bottom: 48px;
+}
+
+/* Card "more" link */
+.card__more {
+  display: inline-block;
+  margin-top: 16px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--accent);
+}
+
+.card__more:hover { color: var(--accent-2); }
+
+/* 3-col cards */
+.cards--3 { grid-template-columns: repeat(3, 1fr); }
+
+/* CTA strip */
+.cta-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 44px 48px;
+}
+
+.cta-strip .section__title { margin-bottom: 8px; font-size: clamp(1.4rem, 2.6vw, 1.9rem); }
+.cta-strip .section__lead { font-size: 1rem; }
+.cta-strip .btn { flex-shrink: 0; }
+
+/* Кнопки-фильтры библиотеки («Все», «Водоизоляция»...).
+   Активная кнопка заливается фирменным градиентом. */
+.lib-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 34px;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--muted);
+  font: 600 0.88rem var(--font-body);
+  padding: 9px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+
+.chip.is-active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border-color: transparent;
+  color: #fff;
+}
+
+/* Карточки публикаций: год в рамочке, название, авторы, данные
+   конференции и кнопка скачивания (если приложен PDF-файл). */
+.lib-list { display: grid; gap: 14px; }
+
+.lib-year {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin-top: 22px;
+}
+
+.lib-year:first-child { margin-top: 0; }
+
+.pub {
+  display: grid;
+  grid-template-columns: 74px 1fr auto;
+  gap: 20px;
+  align-items: start;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 24px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.pub:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+
+.pub__year {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--accent);
+  background: rgba(14, 159, 138, 0.08);
+  border-radius: 10px;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.pub__title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; line-height: 1.4; margin-bottom: 6px; }
+.pub__authors { color: var(--muted); font-size: 0.85rem; margin-bottom: 4px; }
+.pub__ref { color: var(--muted); font-size: 0.8rem; font-style: italic; }
+
+.pub__dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.pub__dl:hover { box-shadow: 0 6px 18px rgba(14, 159, 138, 0.35); }
+
+.pub__badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--bg-tint);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+code {
+  background: rgba(14, 159, 138, 0.08);
+  border: 1px solid rgba(14, 159, 138, 0.2);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 0.88em;
+  color: var(--accent);
+}
+
+/* Contact page */
+.section--flat { padding-top: 70px; }
+
+.contact-extra { margin-top: 24px; }
+.contact-extra .panel-card { max-width: 520px; }
+.contact-extra__text { color: rgba(255, 255, 255, 0.65); font-size: 0.94rem; margin-bottom: 18px; }
+
+/* News button */
+.news__btn { margin-top: 30px; }
+
+/* Круглая кнопка «наверх»: спрятана, пока страница вверху,
+   и плавно появляется после прокрутки вниз. */
+.to-top {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 90;
+  width: 50px;
+  height: 50px;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(8, 20, 32, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.3s, transform 0.3s, visibility 0.3s;
+}
+
+.to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.to-top:hover { transform: translateY(-3px); }
+
+/* Адаптация новых элементов под узкие экраны. */
+@media (max-width: 960px) {
+  .cards--3 { grid-template-columns: 1fr 1fr; }
+  .cta-strip { flex-direction: column; align-items: flex-start; padding: 34px; }
+}
+
+@media (max-width: 620px) {
+  .cards--3 { grid-template-columns: 1fr; }
+  .pub { grid-template-columns: 1fr; gap: 10px; }
+  .pub__year { display: inline-block; padding: 6px 14px; width: auto; justify-self: start; }
+  .page-hero { padding: 120px 0 50px; }
+  .to-top { right: 16px; bottom: 16px; width: 46px; height: 46px; }
+}
+
+/* ═══════════ Смартфоны (узкие экраны) ═══════════ */
+@media (max-width: 430px) {
+  .container { padding: 0 18px; }
+
+  /* Плотная шапка: всё помещается в один ряд */
+  .header__inner { gap: 10px; height: 60px; }
+  .header__right { gap: 8px; }
+  .logo { font-size: 1.05rem; gap: 7px; }
+  .logo__mark { width: 29px; height: 29px; border-radius: 8px; font-size: 0.9rem; }
+  .lang { padding: 3px; }
+  .lang__btn { padding: 4px 8px; font-size: 0.72rem; }
+  .nav { top: 60px; }
+
+  .hero { padding: 108px 0 52px; }
+  .hero__actions { gap: 10px; margin-bottom: 52px; }
+  .btn { padding: 12px 22px; font-size: 0.93rem; }
+  .stat__value { font-size: 2rem; }
+  .stat__label { font-size: 0.8rem; }
+
+  .section { padding: 56px 0; }
+  .section__head { margin-bottom: 36px; }
+  .card { padding: 24px; }
+  .card__photo { width: calc(100% + 48px); margin: -24px -24px 18px; height: 150px; }
+  .offer { padding: 26px; }
+  .offer__num { font-size: 2.4rem; }
+  .quote { padding: 24px; }
+  .panel-card { padding: 24px; }
+  .rnd { padding: 24px; }
+  .cta-strip { padding: 26px 22px; }
+  .contact__item { padding: 22px; }
+
+  .news__stats { gap: 12px; }
+  .news__stats div { min-width: 130px; padding: 16px 18px; }
+  .news__stats strong { font-size: 1.5rem; }
+
+  .pub { padding: 16px 18px; }
+  .footer { padding: 44px 0 32px; }
+}

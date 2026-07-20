@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════
+     Страница «ТЕХНОЛОГИИ»: водоизоляция с анимацией, продукты Powelgel, пескоизоляция с анимацией, МУН, геотермия.
+     Тексты на русском написаны прямо здесь; украинский и английский
+     переводы — в файле js/main.js. Пояснения в таких рамках — для
+     людей, браузер их не показывает.
+     ═══════════════════════════════════════════════════════════ -->
+<html lang="ru">
+<!-- ═══ СЛУЖЕБНАЯ ЧАСТЬ (посетителю не видна): кодировка, заголовок вкладки, подключение шрифтов и стилей ═══ -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Технологии — Poweltec</title>
+  <meta name="description" content="Технологии Poweltec: водоизоляция (WSO), conformance control, пескоизоляция, полимерное заводнение, геотермальные решения.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<!-- ═══ ВИДИМАЯ ЧАСТЬ СТРАНИЦЫ. data-page подсказывает скрипту, какая это страница ═══ -->
+<body data-page="technology">
+
+  <!-- ═══ ШАПКА: логотип, меню, языки. Прикреплена к верху экрана на всех страницах ═══ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__mark">P</span>
+        <span class="logo__text">Poweltec</span>
+      </a>
+      <!-- Главное меню. Тексты пунктов переводятся скриптом (метки data-i18n) -->
+      <nav class="nav" id="nav">
+        <a href="index.html" data-i18n="nav.home">Главная</a>
+        <a href="technology.html" class="active" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="clients.html" data-i18n="nav.clients">Клиенты</a>
+        <a href="quality.html" data-i18n="nav.quality">Качество</a>
+        <a href="about.html" data-i18n="nav.about">О компании</a>
+        <a href="contact.html" class="nav__cta" data-i18n="nav.contact">Контакты</a>
+      </nav>
+      <div class="header__right">
+        <!-- Переключатель языков: украинский / русский / английский -->
+        <div class="lang" id="lang">
+          <button class="lang__btn is-active" data-lang="uk">UK</button>
+          <button class="lang__btn" data-lang="ru">RU</button>
+          <button class="lang__btn" data-lang="en">EN</button>
+        </div>
+        <!-- Кнопка-«бургер» ☰ — раскрывает меню на телефонах и планшетах -->
+        <button class="burger" id="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ ОСНОВНОЕ СОДЕРЖИМОЕ СТРАНИЦЫ ═══ -->
+  <main id="top">
+
+    <!-- Первый экран страницы: заголовок и подводка на фоне тематического фото -->
+    <section class="page-hero page-hero--photo page-hero--technology">
+      <div class="hero__glow hero__glow--1"></div>
+      <div class="container">
+        <span class="section__tag section__tag--light reveal" data-i18n="tech.hero.tag">Технологии</span>
+        <h1 class="page-hero__title reveal" data-i18n="tech.hero.title">Всегда впереди инноваций</h1>
+        <p class="page-hero__lead reveal" data-i18n="tech.hero.lead">Poweltec — пионер полимерного заводнения. Мы участвовали в крупнейших мировых проектах, включая Дацин (Китай) и Пеликан-Лейк (Канада), и сочетаем моделирование призабойной зоны с лабораторными исследованиями в пластовых условиях.</p>
+      </div>
+    </section>
+
+    <!-- WSO / CC -->
+    <section class="section" id="wso">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__tag" data-i18n="tech.wso.tag">Направление 01</span>
+          <h2 class="section__title" data-i18n="tech.wso.title">Водоизоляция (WSO) / Conformance Control</h2>
+        </div>
+        <div class="split split--top">
+          <div class="split__text reveal">
+            <p class="tech-p" data-i18n="tech.wso.p1">В отличие от полимерного заводнения, задача <strong>водоизоляции (WSO — обработка добывающих скважин)</strong> — решить проблемы добычи, вызванные притоком воды: снизить поступление воды из водоносных зон.</p>
+            <p class="tech-p" data-i18n="tech.wso.p2">Аналогично <strong>Conformance Control (CC — закачка в нагнетательные скважины)</strong> устраняет проблемы неоднородности пласта — высокопроницаемые пропластки и трещины — за счёт глубокой обработки зон поглощения со стороны нагнетательной скважины.</p>
+            <p class="tech-p" data-i18n="tech.wso.p3">Из-за более высокой подвижности и проницаемости вода добывается преимущественно перед нефтью — это низкий коэффициент охвата и плохая экономика. Обработка WSO снижает обводнённость скважины, иногда позволяя вернуть в работу остановленные скважины.</p>
+          </div>
+          <!-- Анимация с оригинального сайта Poweltec (файл лежит в assets/anim) -->
+          <figure class="anim reveal">
+            <div class="anim__frame">
+              <iframe src="assets/anim/wso.html" width="640" height="400" loading="lazy" scrolling="no" title="WSO animation"></iframe>
+            </div>
+            <figcaption data-i18n="tech.anim1.caption">Анимация: обработка добывающей скважины — закачка полимера, образование геля и рост добычи нефти.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- POWELGEL -->
+    <section class="section section--dark">
+      <div class="container">
+        <div class="split">
+          <div class="split__text reveal">
+            <span class="section__tag section__tag--light" data-i18n="pg.tag">Продукция</span>
+            <h2 class="section__title" data-i18n="tech.pg.title">Линейка полимеров для WSO/CC — Powelgel™</h2>
+            <p class="section__lead" data-i18n="pg.lead">Линейки продуктов с низким воздействием на окружающую среду для водоизоляции, conformance control и пескоизоляции. Многие продукты зарегистрированы CEFAS для применения в жёстких морских условиях.</p>
+            <ul class="checklist">
+              <li data-i18n="pg.f1">Термостабильность от 30 °C до 150 °C</li>
+              <li data-i18n="pg.f2">Минерализация до 200 г/л (TDS)</li>
+              <li data-i18n="pg.f3">Стойкость к H₂S и кислотам</li>
+              <li data-i18n="pg.f4">Механическая стабильность при сдвиге до 1 000 000 с⁻¹</li>
+              <li data-i18n="pg.f5">Отложенные гели, микрогели заданного размера, биополимеры</li>
+            </ul>
+          </div>
+          <div class="split__panel reveal">
+            <div class="panel-card">
+              <h4 data-i18n="pg.docs.title">С каждой поставкой</h4>
+              <ul class="doclist">
+                <li data-i18n="pg.docs.d1">Контроль качества продукции</li>
+                <li data-i18n="pg.docs.d2">Сертификат анализа (CoA)</li>
+                <li data-i18n="pg.docs.d3">Технические паспорта (TDS)</li>
+                <li data-i18n="pg.docs.d4">Паспорта безопасности (MSDS)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SAND CONTROL -->
+    <section class="section section--tint" id="sand">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__tag" data-i18n="tech.sand.tag">Направление 02</span>
+          <h2 class="section__title" data-i18n="tech.sand.title">Борьба с пескопроявлением</h2>
+        </div>
+        <div class="split split--top">
+          <!-- Анимация с оригинального сайта Poweltec (файл лежит в assets/anim) -->
+          <figure class="anim reveal">
+            <div class="anim__frame">
+              <iframe src="assets/anim/sand-control.html" width="640" height="400" loading="lazy" scrolling="no" title="Sand control animation"></iframe>
+            </div>
+            <figcaption data-i18n="tech.anim2.caption">Анимация: полимерная обработка укрепляет слабосцементированный песчаник и прекращает вынос песка.</figcaption>
+          </figure>
+          <div class="split__text reveal">
+            <p class="tech-p" data-i18n="tech.sand.p1">Мы предлагаем <strong>оригинальную полимерную технологию</strong> укрепления слабосцементированных песчаников. Обработка выполняется простой закачкой с устья — без спуска внутрискважинного оборудования.</p>
+            <p class="tech-p" data-i18n="tech.sand.p2">Технология успешно применяется в газовых и морских скважинах, а также в скважинах подземных хранилищ газа. Эффект от обработки сохраняется в течение нескольких лет.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EOR -->
+    <section class="section" id="eor">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__tag" data-i18n="tech.eor.tag">Направление 03</span>
+          <h2 class="section__title" data-i18n="tech.eor.title">МУН / Полимерное заводнение</h2>
+        </div>
+        <div class="split split--top">
+          <div class="split__text reveal">
+            <p class="tech-p" data-i18n="dir.eor.text">45 лет опыта разработки полимерного заводнения. Участие в первом пилотном проекте в Дацине (Китай), первом проекте на горизонтальных скважинах в Пеликан-Лейк (Канада) и первом глубоководном проекте в Далии (Ангола).</p>
+            <p class="tech-p" data-i18n="tech.eor.services">Полный цикл сервисов: моделирование пласта, лабораторные испытания и фильтрационные эксперименты на керне, промысловая поддержка проектов полимерного заводнения.</p>
+          </div>
+          <div class="split__panel reveal">
+            <div class="panel-card panel-card--light">
+              <h4 data-i18n="tech.eor.first.title">Первые в отрасли</h4>
+              <ul class="doclist doclist--light">
+                <li data-i18n="tech.eor.first.d1">Дацин (Китай) — крупнейший проект полимерного заводнения</li>
+                <li data-i18n="tech.eor.first.d2">Пеликан-Лейк (Канада) — первый проект на горизонтальных скважинах</li>
+                <li data-i18n="tech.eor.first.d3">Далия (Ангола) — первый глубоководный проект</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GEOTHERMAL -->
+    <section class="section section--tint" id="geo">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__tag" data-i18n="tech.geo.tag">Направление 04</span>
+          <h2 class="section__title" data-i18n="tech.geo.title">Геотермальные технологии</h2>
+        </div>
+        <div class="rnd reveal">
+          <p data-i18n="tech.geo.text">Технология Powelsand используется для предотвращения потерь приёмистости в геотермальных скважинах: полимерная обработка укрепляет породу вокруг ствола и продлевает срок службы геотермальных дублетов «добыча — нагнетание».</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ ПОДВАЛ: краткое описание компании, ссылки, копирайт ═══ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo__mark">P</span> Poweltec
+      </div>
+      <p class="footer__tagline" data-i18n="ft.tagline">Независимая сервисная компания, посвятившая себя повышению добычи нефтяных и газовых месторождений.</p>
+      <div class="footer__links">
+        <a href="https://www.linkedin.com/company/2650406/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="contact.html" data-i18n="nav.contact">Контакты</a>
+      </div>
+      <p class="footer__copy">© 2007–2026 Poweltec. <span data-i18n="ft.rights">Все права защищены.</span></p>
+    </div>
+  </footer>
+
+  <!-- Круглая кнопка «наверх» — появляется после прокрутки вниз -->
+  <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+
+  <!-- Главный скрипт: переводы, меню, анимации появления, кнопка «наверх» -->
+  <script src="js/main.js"></script>
+</body>
+</html>

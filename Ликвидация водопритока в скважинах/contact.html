@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════
+     Страница «КОНТАКТЫ»: телефон, факс, адрес, документы, соцсети.
+     Тексты на русском написаны прямо здесь; украинский и английский
+     переводы — в файле js/main.js. Пояснения в таких рамках — для
+     людей, браузер их не показывает.
+     ═══════════════════════════════════════════════════════════ -->
+<html lang="ru">
+<!-- ═══ СЛУЖЕБНАЯ ЧАСТЬ (посетителю не видна): кодировка, заголовок вкладки, подключение шрифтов и стилей ═══ -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Контакты — Poweltec</title>
+  <meta name="description" content="Контакты Poweltec: телефон +33 (0) 1 41 96 21 95, адрес 3 rue Paul Héroult, 92500 Rueil-Malmaison, France.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<!-- ═══ ВИДИМАЯ ЧАСТЬ СТРАНИЦЫ. data-page подсказывает скрипту, какая это страница ═══ -->
+<body data-page="contact">
+
+  <!-- ═══ ШАПКА: логотип, меню, языки. Прикреплена к верху экрана на всех страницах ═══ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__mark">P</span>
+        <span class="logo__text">Poweltec</span>
+      </a>
+      <!-- Главное меню. Тексты пунктов переводятся скриптом (метки data-i18n) -->
+      <nav class="nav" id="nav">
+        <a href="index.html" data-i18n="nav.home">Главная</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="clients.html" data-i18n="nav.clients">Клиенты</a>
+        <a href="quality.html" data-i18n="nav.quality">Качество</a>
+        <a href="about.html" data-i18n="nav.about">О компании</a>
+        <a href="contact.html" class="nav__cta active" data-i18n="nav.contact">Контакты</a>
+      </nav>
+      <div class="header__right">
+        <!-- Переключатель языков: украинский / русский / английский -->
+        <div class="lang" id="lang">
+          <button class="lang__btn is-active" data-lang="uk">UK</button>
+          <button class="lang__btn" data-lang="ru">RU</button>
+          <button class="lang__btn" data-lang="en">EN</button>
+        </div>
+        <!-- Кнопка-«бургер» ☰ — раскрывает меню на телефонах и планшетах -->
+        <button class="burger" id="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ ОСНОВНОЕ СОДЕРЖИМОЕ СТРАНИЦЫ ═══ -->
+  <main id="top">
+
+    <!-- Первый экран страницы: заголовок и подводка на фоне тематического фото -->
+    <section class="page-hero page-hero--photo page-hero--contact">
+      <div class="hero__glow hero__glow--1"></div>
+      <div class="container">
+        <span class="section__tag section__tag--light reveal" data-i18n="ct.tag">Контакты</span>
+        <h1 class="page-hero__title reveal" data-i18n="ct.title">Обсудим ваш проект</h1>
+        <p class="page-hero__lead reveal" data-i18n="ct.lead">Свяжитесь с нами любым удобным способом — ответим и предложим план работ.</p>
+      </div>
+    </section>
+
+    <section class="section section--dark section--flat">
+      <div class="container">
+        <!-- Карточки контактов: телефон, факс, адрес, документы -->
+        <div class="contact reveal">
+          <div class="contact__item">
+            <span class="contact__label" data-i18n="ct.phone">Телефон</span>
+            <a href="tel:+33141962195">+33 (0) 1 41 96 21 95</a>
+          </div>
+          <div class="contact__item">
+            <span class="contact__label" data-i18n="ct.fax">Факс</span>
+            <span>+33 (0) 1 41 96 21 96</span>
+          </div>
+          <div class="contact__item">
+            <span class="contact__label" data-i18n="ct.addr">Адрес</span>
+            <span>3 rue Paul Héroult,<br>92500 Rueil-Malmaison, France</span>
+          </div>
+          <div class="contact__item">
+            <span class="contact__label" data-i18n="ct.docs">Документы</span>
+            <div class="contact__docs">
+              <a href="docs/brochure.pdf" data-i18n="ct.doc1">Брошюра (PDF)</a>
+              <a href="docs/quality-policy.pdf" data-i18n="ct.doc2">Политика качества (PDF)</a>
+              <a href="docs/quality-certificate.pdf" data-i18n="ct.doc3">Сертификат качества (PDF)</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-extra reveal">
+          <div class="panel-card">
+            <h4 data-i18n="ct.social.title">Мы в социальных сетях</h4>
+            <p class="contact-extra__text" data-i18n="ct.social.text">Следите за новостями компании, публикациями и выступлениями на конференциях в LinkedIn.</p>
+            <a class="btn btn--ghost" href="https://www.linkedin.com/company/2650406/" target="_blank" rel="noopener">LinkedIn →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ ПОДВАЛ: краткое описание компании, ссылки, копирайт ═══ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo__mark">P</span> Poweltec
+      </div>
+      <p class="footer__tagline" data-i18n="ft.tagline">Независимая сервисная компания, посвятившая себя повышению добычи нефтяных и газовых месторождений.</p>
+      <div class="footer__links">
+        <a href="https://www.linkedin.com/company/2650406/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="contact.html" data-i18n="nav.contact">Контакты</a>
+      </div>
+      <p class="footer__copy">© 2007–2026 Poweltec. <span data-i18n="ft.rights">Все права защищены.</span></p>
+    </div>
+  </footer>
+
+  <!-- Круглая кнопка «наверх» — появляется после прокрутки вниз -->
+  <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+
+  <!-- Главный скрипт: переводы, меню, анимации появления, кнопка «наверх» -->
+  <script src="js/main.js"></script>
+</body>
+</html>

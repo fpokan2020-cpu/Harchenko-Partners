@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════
+     Страница «О КОМПАНИИ»: описание, руководитель, лаборатория, научные программы.
+     Тексты на русском написаны прямо здесь; украинский и английский
+     переводы — в файле js/main.js. Пояснения в таких рамках — для
+     людей, браузер их не показывает.
+     ═══════════════════════════════════════════════════════════ -->
+<html lang="ru">
+<!-- ═══ СЛУЖЕБНАЯ ЧАСТЬ (посетителю не видна): кодировка, заголовок вкладки, подключение шрифтов и стилей ═══ -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>О компании — Poweltec</title>
+  <meta name="description" content="О компании Poweltec: основана в 2007 году, лаборатория 460 м² в Рюэй-Мальмезон, научно-исследовательские программы.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<!-- ═══ ВИДИМАЯ ЧАСТЬ СТРАНИЦЫ. data-page подсказывает скрипту, какая это страница ═══ -->
+<body data-page="about">
+
+  <!-- ═══ ШАПКА: логотип, меню, языки. Прикреплена к верху экрана на всех страницах ═══ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__mark">P</span>
+        <span class="logo__text">Poweltec</span>
+      </a>
+      <!-- Главное меню. Тексты пунктов переводятся скриптом (метки data-i18n) -->
+      <nav class="nav" id="nav">
+        <a href="index.html" data-i18n="nav.home">Главная</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="clients.html" data-i18n="nav.clients">Клиенты</a>
+        <a href="quality.html" data-i18n="nav.quality">Качество</a>
+        <a href="about.html" class="active" data-i18n="nav.about">О компании</a>
+        <a href="contact.html" class="nav__cta" data-i18n="nav.contact">Контакты</a>
+      </nav>
+      <div class="header__right">
+        <!-- Переключатель языков: украинский / русский / английский -->
+        <div class="lang" id="lang">
+          <button class="lang__btn is-active" data-lang="uk">UK</button>
+          <button class="lang__btn" data-lang="ru">RU</button>
+          <button class="lang__btn" data-lang="en">EN</button>
+        </div>
+        <!-- Кнопка-«бургер» ☰ — раскрывает меню на телефонах и планшетах -->
+        <button class="burger" id="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ ОСНОВНОЕ СОДЕРЖИМОЕ СТРАНИЦЫ ═══ -->
+  <main id="top">
+
+    <!-- Первый экран страницы: заголовок и подводка на фоне тематического фото -->
+    <section class="page-hero page-hero--photo page-hero--about">
+      <div class="hero__glow hero__glow--1"></div>
+      <div class="container">
+        <span class="section__tag section__tag--light reveal" data-i18n="ab.tag">О компании</span>
+        <h1 class="page-hero__title reveal" data-i18n="ab.hero.title">Кто мы</h1>
+        <p class="page-hero__lead reveal" data-i18n="ab.text">Poweltec основана в 2007 году и специализируется на применении полимерных технологий для повышения производительности нефтяных и газовых месторождений. Мы работаем по всему миру — от Ближнего Востока до Западной Африки и Латинской Америки.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="split">
+          <div class="split__text reveal">
+            <span class="section__tag" data-i18n="ab.lead.tag">Руководство</span>
+            <h2 class="section__title" data-i18n="ab.title">Независимая сервисная компания, посвятившая себя повышению продуктивности месторождений</h2>
+            <p class="section__lead" data-i18n="ab.mission">Наша миссия — давать операторам проверенные полимерные решения с измеримым результатом: меньше воды и песка, больше нефти и газа.</p>
+          </div>
+          <div class="split__panel reveal">
+            <div class="panel-card panel-card--person panel-card--light">
+              <div class="avatar">AZ</div>
+              <h4>Alain Zaitoun</h4>
+              <span class="panel-card__role" data-i18n="ab.ceo.role">Генеральный директор, основатель</span>
+              <p data-i18n="ab.ceo.bio">Доктор химической инженерии (1979). Основал компанию в 2007 году после 30 лет работы в области НИОКР. Автор множества научных публикаций и патентов, член руководящего комитета SPE Oilfield Chemistry Symposium, SPE Distinguished Lecturer (2009–2010).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint" id="lab">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__tag" data-i18n="lab.tag">Лаборатория</span>
+          <h2 class="section__title" data-i18n="lab.title">Собственная лаборатория площадью 460 м²</h2>
+          <p class="section__lead" data-i18n="lab.lead">Рюэй-Мальмезон, Франция. Полный цикл исследований — от скрининга химии до фильтрационных экспериментов в пластовых условиях.</p>
+        </div>
+
+        <img class="photo-block reveal" src="assets/img/quality.jpg" alt="Работа с образцами в лаборатории" loading="lazy">
+
+        <!-- Сетка с перечнем лабораторного оборудования -->
+        <div class="labgrid">
+          <div class="labitem reveal" data-i18n="lab.i1">7 фильтрационных установок HP/HT для керна 1,5" и 1"</div>
+          <div class="labitem reveal" data-i18n="lab.i2">2 установки НД/НТ для скрининга химических реагентов</div>
+          <div class="labitem reveal" data-i18n="lab.i3">Установка оценки повреждения пласта (Formation Damage)</div>
+          <div class="labitem reveal" data-i18n="lab.i4">2 рампы деаэрации по стандарту API</div>
+          <div class="labitem reveal" data-i18n="lab.i5">Перчаточный бокс (glove box)</div>
+          <div class="labitem reveal" data-i18n="lab.i6">Реометры нескольких типов</div>
+          <div class="labitem reveal" data-i18n="lab.i7">Установка фильтрации по стандарту API</div>
+          <div class="labitem reveal" data-i18n="lab.i8">Установки растворения полимеров</div>
+          <div class="labitem reveal" data-i18n="lab.i9">Установка механической деструкции по стандарту API</div>
+          <div class="labitem reveal" data-i18n="lab.i10">Анализаторы углерода/азота, УФ-спектрофотометры, светорассеяние</div>
+        </div>
+
+        <div class="rnd reveal">
+          <h3 data-i18n="lab.rnd.title">Научно-исследовательские программы</h3>
+          <p data-i18n="lab.rnd.text">Мы сотрудничаем с университетами, научными центрами, производителями химических реагентов и операторами. Текущие направления: полимеры МУН для высокотемпературных пластов (до 120 °C) и новое поколение продуктов для водоизоляции и пескоизоляции в экстремальных условиях.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ ПОДВАЛ: краткое описание компании, ссылки, копирайт ═══ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo__mark">P</span> Poweltec
+      </div>
+      <p class="footer__tagline" data-i18n="ft.tagline">Независимая сервисная компания, посвятившая себя повышению добычи нефтяных и газовых месторождений.</p>
+      <div class="footer__links">
+        <a href="https://www.linkedin.com/company/2650406/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="contact.html" data-i18n="nav.contact">Контакты</a>
+      </div>
+      <p class="footer__copy">© 2007–2026 Poweltec. <span data-i18n="ft.rights">Все права защищены.</span></p>
+    </div>
+  </footer>
+
+  <!-- Круглая кнопка «наверх» — появляется после прокрутки вниз -->
+  <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+
+  <!-- Главный скрипт: переводы, меню, анимации появления, кнопка «наверх» -->
+  <script src="js/main.js"></script>
+</body>
+</html>

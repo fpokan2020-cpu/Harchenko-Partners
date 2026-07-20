@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════
+     Страница «КЛИЕНТЫ»: отзывы заказчиков.
+     Тексты на русском написаны прямо здесь; украинский и английский
+     переводы — в файле js/main.js. Пояснения в таких рамках — для
+     людей, браузер их не показывает.
+     ═══════════════════════════════════════════════════════════ -->
+<html lang="ru">
+<!-- ═══ СЛУЖЕБНАЯ ЧАСТЬ (посетителю не видна): кодировка, заголовок вкладки, подключение шрифтов и стилей ═══ -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Клиенты — Poweltec</title>
+  <meta name="description" content="Отзывы клиентов Poweltec: Perenco, Petroleum Development Oman, GDF Suez.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<!-- ═══ ВИДИМАЯ ЧАСТЬ СТРАНИЦЫ. data-page подсказывает скрипту, какая это страница ═══ -->
+<body data-page="clients">
+
+  <!-- ═══ ШАПКА: логотип, меню, языки. Прикреплена к верху экрана на всех страницах ═══ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__mark">P</span>
+        <span class="logo__text">Poweltec</span>
+      </a>
+      <!-- Главное меню. Тексты пунктов переводятся скриптом (метки data-i18n) -->
+      <nav class="nav" id="nav">
+        <a href="index.html" data-i18n="nav.home">Главная</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="clients.html" class="active" data-i18n="nav.clients">Клиенты</a>
+        <a href="quality.html" data-i18n="nav.quality">Качество</a>
+        <a href="about.html" data-i18n="nav.about">О компании</a>
+        <a href="contact.html" class="nav__cta" data-i18n="nav.contact">Контакты</a>
+      </nav>
+      <div class="header__right">
+        <!-- Переключатель языков: украинский / русский / английский -->
+        <div class="lang" id="lang">
+          <button class="lang__btn is-active" data-lang="uk">UK</button>
+          <button class="lang__btn" data-lang="ru">RU</button>
+          <button class="lang__btn" data-lang="en">EN</button>
+        </div>
+        <!-- Кнопка-«бургер» ☰ — раскрывает меню на телефонах и планшетах -->
+        <button class="burger" id="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ ОСНОВНОЕ СОДЕРЖИМОЕ СТРАНИЦЫ ═══ -->
+  <main id="top">
+
+    <!-- Первый экран страницы: заголовок и подводка на фоне тематического фото -->
+    <section class="page-hero page-hero--photo page-hero--clients">
+      <div class="hero__glow hero__glow--1"></div>
+      <div class="container">
+        <span class="section__tag section__tag--light reveal" data-i18n="cl.tag">Клиенты</span>
+        <h1 class="page-hero__title reveal" data-i18n="cl.title">Отзывы наших заказчиков</h1>
+        <p class="page-hero__lead reveal" data-i18n="cl.lead">Нам доверяют операторы по всему миру — от Западной Африки до Омана и Индонезии.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <!-- Отзывы клиентов (три карточки с цитатами) -->
+        <div class="quotes">
+          <blockquote class="quote reveal">
+            <p data-i18n="cl.q1.text">«Команда Poweltec продемонстрировала высокий технический уровень, вовлечённость и настрой на результат. Технологии компании и гибкие пакеты услуг делают её предпочтительным подрядчиком в сфере повышения нефтеотдачи.»</p>
+            <footer>
+              <strong>J.-B. Chevaillier</strong>
+              <span data-i18n="cl.q1.role">Perenco E&amp;P, Well Intervention &amp; Stimulation</span>
+            </footer>
+          </blockquote>
+          <blockquote class="quote reveal">
+            <p data-i18n="cl.q2.text">«Мы очень довольны качеством услуг вашей компании. Высоко ценим профессионализм и ответственность команды и рекомендуем Poweltec другим операторам.»</p>
+            <footer>
+              <strong>Hamed Hamoud Al-Sharji, Ph.D</strong>
+              <span data-i18n="cl.q2.role">Lekhwair WRM Team Leader, Petroleum Development Oman</span>
+            </footer>
+          </blockquote>
+          <blockquote class="quote reveal">
+            <p data-i18n="cl.q3.text">«Сотрудничество привело к созданию химического процесса снижения выноса песка в скважинах подземных хранилищ газа. Эффект от обработки сохраняется не менее 4 лет.»</p>
+            <footer>
+              <strong>Thierry Pichery</strong>
+              <span data-i18n="cl.q3.role">RH and CA Member, GDF Suez</span>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint">
+      <div class="container">
+        <!-- Приглашение обсудить проект с кнопкой «Связаться» -->
+        <div class="cta-strip reveal">
+          <div>
+            <h2 class="section__title" data-i18n="home.cta.title">Готовы обсудить ваш проект?</h2>
+            <p class="section__lead" data-i18n="home.cta.text">Расскажите о вашей задаче — мы предложим решение: от лабораторных исследований до операций на промысле.</p>
+          </div>
+          <a href="contact.html" class="btn btn--primary" data-i18n="home.cta.btn">Связаться</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ ПОДВАЛ: краткое описание компании, ссылки, копирайт ═══ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo__mark">P</span> Poweltec
+      </div>
+      <p class="footer__tagline" data-i18n="ft.tagline">Независимая сервисная компания, посвятившая себя повышению добычи нефтяных и газовых месторождений.</p>
+      <div class="footer__links">
+        <a href="https://www.linkedin.com/company/2650406/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="contact.html" data-i18n="nav.contact">Контакты</a>
+      </div>
+      <p class="footer__copy">© 2007–2026 Poweltec. <span data-i18n="ft.rights">Все права защищены.</span></p>
+    </div>
+  </footer>
+
+  <!-- Круглая кнопка «наверх» — появляется после прокрутки вниз -->
+  <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+
+  <!-- Главный скрипт: переводы, меню, анимации появления, кнопка «наверх» -->
+  <script src="js/main.js"></script>
+</body>
+</html>

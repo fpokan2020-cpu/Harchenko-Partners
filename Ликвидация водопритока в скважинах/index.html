@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════
+     ГЛАВНАЯ СТРАНИЦА: первый экран с фото, счётчики, направления, новость, приглашение к сотрудничеству.
+     Тексты на русском написаны прямо здесь; украинский и английский
+     переводы — в файле js/main.js. Пояснения в таких рамках — для
+     людей, браузер их не показывает.
+     ═══════════════════════════════════════════════════════════ -->
+<html lang="ru">
+<!-- ═══ СЛУЖЕБНАЯ ЧАСТЬ (посетителю не видна): кодировка, заголовок вкладки, подключение шрифтов и стилей ═══ -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poweltec — Полимерные технологии для нефтегазовой отрасли</title>
+  <meta name="description" content="Независимая сервисная компания: водоизоляция, борьба с пескопроявлением, полимерное заводнение (МУН), геотермальные технологии.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<!-- ═══ ВИДИМАЯ ЧАСТЬ СТРАНИЦЫ. data-page подсказывает скрипту, какая это страница ═══ -->
+<body data-page="home">
+
+  <!-- ═══ ШАПКА: логотип, меню, языки. Прикреплена к верху экрана на всех страницах ═══ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__mark">P</span>
+        <span class="logo__text">Poweltec</span>
+      </a>
+      <!-- Главное меню. Тексты пунктов переводятся скриптом (метки data-i18n) -->
+      <nav class="nav" id="nav">
+        <a href="index.html" class="active" data-i18n="nav.home">Главная</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="clients.html" data-i18n="nav.clients">Клиенты</a>
+        <a href="quality.html" data-i18n="nav.quality">Качество</a>
+        <a href="about.html" data-i18n="nav.about">О компании</a>
+        <a href="contact.html" class="nav__cta" data-i18n="nav.contact">Контакты</a>
+      </nav>
+      <div class="header__right">
+        <!-- Переключатель языков: украинский / русский / английский -->
+        <div class="lang" id="lang">
+          <button class="lang__btn is-active" data-lang="uk">UK</button>
+          <button class="lang__btn" data-lang="ru">RU</button>
+          <button class="lang__btn" data-lang="en">EN</button>
+        </div>
+        <!-- Кнопка-«бургер» ☰ — раскрывает меню на телефонах и планшетах -->
+        <button class="burger" id="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ ОСНОВНОЕ СОДЕРЖИМОЕ СТРАНИЦЫ ═══ -->
+  <main id="top">
+
+    <!-- Первый экран: заголовок, кнопки и счётчики на фоне фотографии -->
+    <section class="hero">
+      <div class="hero__glow hero__glow--1"></div>
+      <div class="hero__glow hero__glow--2"></div>
+      <div class="container hero__inner">
+        <div class="hero__badge reveal">
+          <span class="pulse-dot"></span>
+          <span data-i18n="hero.badge">Независимая сервисная компания · Франция</span>
+        </div>
+        <h1 class="hero__title reveal" data-i18n="hero.title">Полимерные технологии для повышения нефте- и&nbsp;газоотдачи</h1>
+        <p class="hero__subtitle reveal" data-i18n="hero.subtitle">Мы помогаем операторам по всему миру увеличивать добычу: водоизоляция, борьба с пескопроявлением, полимерное заводнение и геотермальные решения — от лаборатории до промысла.</p>
+        <div class="hero__actions reveal">
+          <a href="technology.html" class="btn btn--primary" data-i18n="hero.cta1">Наши технологии</a>
+          <a href="contact.html" class="btn btn--ghost" data-i18n="hero.cta2">Связаться с нами</a>
+        </div>
+
+        <!-- Счётчики достижений: цифры «накручиваются» при появлении на экране -->
+        <div class="stats reveal">
+          <div class="stat">
+            <div class="stat__value"><span class="counter" data-target="250">0</span>+</div>
+            <div class="stat__label" data-i18n="stats.trials">полевых испытаний по всему миру</div>
+          </div>
+          <div class="stat">
+            <div class="stat__value"><span class="counter" data-target="100">0</span>+</div>
+            <div class="stat__label" data-i18n="stats.wso">успешных операций водоизоляции</div>
+          </div>
+          <div class="stat">
+            <div class="stat__value"><span class="counter" data-target="45">0</span></div>
+            <div class="stat__label" data-i18n="stats.years">лет опыта в полимерном заводнении</div>
+          </div>
+          <div class="stat">
+            <div class="stat__value"><span class="counter" data-target="75">0</span>%</div>
+            <div class="stat__label" data-i18n="stats.success">успешность обработок скважин</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="directions">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__tag" data-i18n="dir.tag">Направления</span>
+          <h2 class="section__title" data-i18n="dir.title">Мы — лидеры в четырёх областях</h2>
+          <p class="section__lead" data-i18n="dir.lead">Сочетание моделирования призабойной зоны, лабораторных исследований в пластовых условиях и промысловой поддержки.</p>
+        </div>
+
+        <!-- Карточки направлений деятельности (фото + описание + ссылка) -->
+        <div class="cards">
+          <article class="card reveal">
+            <img class="card__photo card__photo--top" src="assets/img/card-wso.jpg" alt="Морская нефтяная платформа" loading="lazy">
+            <h3 data-i18n="dir.wso.title">Водоизоляция / Conformance Control</h3>
+            <p data-i18n="dir.wso.text">Решение проблем обводнения добывающих скважин и выравнивание профиля приёмистости нагнетательных. Более 100 успешных операций по всему миру: вертикальные и горизонтальные скважины, песчаники и карбонаты.</p>
+            <a class="card__more" href="technology.html#wso" data-i18n="home.more">Подробнее →</a>
+          </article>
+          <article class="card reveal">
+            <img class="card__photo" src="assets/img/card-sand.jpg" alt="Песчаная дюна" loading="lazy">
+            <h3 data-i18n="dir.sand.title">Борьба с пескопроявлением</h3>
+            <p data-i18n="dir.sand.text">Обработка газовых и морских скважин простой закачкой — без спуска внутрискважинного оборудования. Эффект сохраняется в течение нескольких лет.</p>
+            <a class="card__more" href="technology.html#sand" data-i18n="home.more">Подробнее →</a>
+          </article>
+          <article class="card reveal">
+            <img class="card__photo" src="assets/img/card-eor.jpg" alt="Станок-качалка на нефтяном месторождении" loading="lazy">
+            <h3 data-i18n="dir.eor.title">МУН / Полимерное заводнение</h3>
+            <p data-i18n="dir.eor.text">45 лет опыта разработки полимерного заводнения. Участие в первом пилотном проекте в Дацине (Китай), первом проекте на горизонтальных скважинах в Пеликан-Лейк (Канада) и первом глубоководном проекте в Далии (Ангола).</p>
+            <a class="card__more" href="technology.html#eor" data-i18n="home.more">Подробнее →</a>
+          </article>
+          <article class="card reveal">
+            <img class="card__photo" src="assets/img/card-geo.jpg" alt="Геотермальная электростанция" loading="lazy">
+            <h3 data-i18n="dir.geo.title">Геотермальные технологии</h3>
+            <p data-i18n="dir.geo.text">Технология Powelsand предотвращает потери приёмистости геотермальных скважин и продлевает срок службы геотермальных проектов.</p>
+            <a class="card__more" href="technology.html#geo" data-i18n="home.more">Подробнее →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--dark" id="news">
+      <div class="container">
+        <div class="news reveal">
+          <span class="news__badge" data-i18n="news.badge">Последние новости · Сентябрь 2024</span>
+          <h2 data-i18n="news.title">Водоизоляция в трещиноватых карбонатных скважинах — месторождение Daleel</h2>
+          <p data-i18n="news.text">Шестая кампания включала две горизонтальные и одну вертикальную скважину. Всего с 2019 года выполнено 38 обработок с успешностью 75 %. Дополнительная добыча нефти — около 500 000 баррелей. Результаты опубликованы в статьях SPE 203394, SPE 217009 и SPE 218438. Следующая презентация — OPES 2025, Маскат (май 2025).</p>
+          <div class="news__stats">
+            <div><strong>38</strong><span data-i18n="news.s1">обработок с 2019 года</span></div>
+            <div><strong>75%</strong><span data-i18n="news.s2">успешность</span></div>
+            <div><strong>~500 000</strong><span data-i18n="news.s3">баррелей дополнительной нефти</span></div>
+          </div>
+          <a href="library.html" class="btn btn--ghost news__btn" data-i18n="home.lib.btn">Все публикации →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint">
+      <div class="container">
+        <!-- Приглашение обсудить проект с кнопкой «Связаться» -->
+        <div class="cta-strip reveal">
+          <div>
+            <h2 class="section__title" data-i18n="home.cta.title">Готовы обсудить ваш проект?</h2>
+            <p class="section__lead" data-i18n="home.cta.text">Расскажите о вашей задаче — мы предложим решение: от лабораторных исследований до операций на промысле.</p>
+          </div>
+          <a href="contact.html" class="btn btn--primary" data-i18n="home.cta.btn">Связаться</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ ПОДВАЛ: краткое описание компании, ссылки, копирайт ═══ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo__mark">P</span> Poweltec
+      </div>
+      <p class="footer__tagline" data-i18n="ft.tagline">Независимая сервисная компания, посвятившая себя повышению добычи нефтяных и газовых месторождений.</p>
+      <div class="footer__links">
+        <a href="https://www.linkedin.com/company/2650406/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="contact.html" data-i18n="nav.contact">Контакты</a>
+      </div>
+      <p class="footer__copy">© 2007–2026 Poweltec. <span data-i18n="ft.rights">Все права защищены.</span></p>
+    </div>
+  </footer>
+
+  <!-- Круглая кнопка «наверх» — появляется после прокрутки вниз -->
+  <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+
+  <!-- Главный скрипт: переводы, меню, анимации появления, кнопка «наверх» -->
+  <script src="js/main.js"></script>
+</body>
+</html>

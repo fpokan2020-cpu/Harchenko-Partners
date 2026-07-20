@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════
+     Страница «КАЧЕСТВО»: сертификат ISO 9001, политика качества, экология.
+     Тексты на русском написаны прямо здесь; украинский и английский
+     переводы — в файле js/main.js. Пояснения в таких рамках — для
+     людей, браузер их не показывает.
+     ═══════════════════════════════════════════════════════════ -->
+<html lang="ru">
+<!-- ═══ СЛУЖЕБНАЯ ЧАСТЬ (посетителю не видна): кодировка, заголовок вкладки, подключение шрифтов и стилей ═══ -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Качество — Poweltec</title>
+  <meta name="description" content="Политика качества Poweltec: сертификация ISO 9001, регистрация продуктов CEFAS, экологичность.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<!-- ═══ ВИДИМАЯ ЧАСТЬ СТРАНИЦЫ. data-page подсказывает скрипту, какая это страница ═══ -->
+<body data-page="quality">
+
+  <!-- ═══ ШАПКА: логотип, меню, языки. Прикреплена к верху экрана на всех страницах ═══ -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__mark">P</span>
+        <span class="logo__text">Poweltec</span>
+      </a>
+      <!-- Главное меню. Тексты пунктов переводятся скриптом (метки data-i18n) -->
+      <nav class="nav" id="nav">
+        <a href="index.html" data-i18n="nav.home">Главная</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="clients.html" data-i18n="nav.clients">Клиенты</a>
+        <a href="quality.html" class="active" data-i18n="nav.quality">Качество</a>
+        <a href="about.html" data-i18n="nav.about">О компании</a>
+        <a href="contact.html" class="nav__cta" data-i18n="nav.contact">Контакты</a>
+      </nav>
+      <div class="header__right">
+        <!-- Переключатель языков: украинский / русский / английский -->
+        <div class="lang" id="lang">
+          <button class="lang__btn is-active" data-lang="uk">UK</button>
+          <button class="lang__btn" data-lang="ru">RU</button>
+          <button class="lang__btn" data-lang="en">EN</button>
+        </div>
+        <!-- Кнопка-«бургер» ☰ — раскрывает меню на телефонах и планшетах -->
+        <button class="burger" id="burger" aria-label="Меню">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ ОСНОВНОЕ СОДЕРЖИМОЕ СТРАНИЦЫ ═══ -->
+  <main id="top">
+
+    <!-- Первый экран страницы: заголовок и подводка на фоне тематического фото -->
+    <section class="page-hero page-hero--photo page-hero--quality">
+      <div class="hero__glow hero__glow--1"></div>
+      <div class="container">
+        <span class="section__tag section__tag--light reveal" data-i18n="q.tag">Качество</span>
+        <h1 class="page-hero__title reveal" data-i18n="q.title">Политика качества</h1>
+        <p class="page-hero__lead reveal" data-i18n="q.lead">Система менеджмента качества Poweltec сертифицирована по ISO 9001. Мы документируем каждый этап работы — от лабораторных исследований до операций на промысле.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <!-- Три карточки: сертификат, политика качества, экология -->
+        <div class="cards cards--3">
+          <article class="card reveal">
+            <div class="card__icon card__icon--teal">📜</div>
+            <h3 data-i18n="q.cert.title">Сертификат ISO 9001</h3>
+            <p data-i18n="q.cert.text">Сертификат № 17489268-9001 подтверждает соответствие системы менеджмента качества компании требованиям стандарта ISO 9001.</p>
+            <a class="card__more" href="docs/quality-certificate.pdf" data-i18n="q.download">Скачать (PDF) →</a>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon card__icon--blue">📋</div>
+            <h3 data-i18n="q.policy.title">Политика качества</h3>
+            <p data-i18n="q.policy.text">Официальный документ о принципах обеспечения качества: ответственность руководства, контроль процессов, постоянное улучшение.</p>
+            <a class="card__more" href="docs/quality-policy.pdf" data-i18n="q.download">Скачать (PDF) →</a>
+          </article>
+          <article class="card reveal">
+            <div class="card__icon card__icon--green">🌿</div>
+            <h3 data-i18n="q.env.title">Экология и CEFAS</h3>
+            <p data-i18n="q.env.text">Линейки продуктов с низким воздействием на окружающую среду. Многие продукты зарегистрированы CEFAS для применения в жёстких морских условиях.</p>
+          </article>
+        </div>
+
+        <div class="rnd reveal" style="margin-top:48px">
+          <h3 data-i18n="q.qc.title">Контроль качества на каждом этапе</h3>
+          <p data-i18n="q.qc.text">Каждая поставка продукции сопровождается контролем качества, сертификатом анализа (CoA), техническими паспортами (TDS) и паспортами безопасности (MSDS). На промысле мы контролируем качество воды и приготовление растворов.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ ПОДВАЛ: краткое описание компании, ссылки, копирайт ═══ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="logo__mark">P</span> Poweltec
+      </div>
+      <p class="footer__tagline" data-i18n="ft.tagline">Независимая сервисная компания, посвятившая себя повышению добычи нефтяных и газовых месторождений.</p>
+      <div class="footer__links">
+        <a href="https://www.linkedin.com/company/2650406/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="technology.html" data-i18n="nav.technology">Технологии</a>
+        <a href="offers.html" data-i18n="nav.offers">Услуги</a>
+        <a href="library.html" data-i18n="nav.library">Библиотека</a>
+        <a href="contact.html" data-i18n="nav.contact">Контакты</a>
+      </div>
+      <p class="footer__copy">© 2007–2026 Poweltec. <span data-i18n="ft.rights">Все права защищены.</span></p>
+    </div>
+  </footer>
+
+  <!-- Круглая кнопка «наверх» — появляется после прокрутки вниз -->
+  <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+
+  <!-- Главный скрипт: переводы, меню, анимации появления, кнопка «наверх» -->
+  <script src="js/main.js"></script>
+</body>
+</html>
